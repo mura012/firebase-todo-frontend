@@ -1,4 +1,4 @@
-import { TodoLists } from "@/Components/todo";
+import { TodoLists } from "@/components/todo";
 import { Layout } from "@/layout";
 
 const Home = () => {
