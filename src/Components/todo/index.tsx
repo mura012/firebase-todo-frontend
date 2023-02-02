@@ -15,7 +15,7 @@ export const TodoList = ({
       ).map((todo) => {
         return (
           <li key={todo.id} className=" flex justify-between items-center">
-            <p className="ml-6">{todo.title}</p>
+            <p className="ml-6">{todo.task}</p>
             <button className="mr-6">削除</button>
           </li>
         );

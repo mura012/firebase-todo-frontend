@@ -1,6 +1,5 @@
 import { TodoLists } from "@/components/todo";
 import { Layout } from "@/layout";
-
 const Home = () => {
   return (
     <Layout title="home">
