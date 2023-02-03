@@ -7,14 +7,14 @@ import { Auth } from "../auth/auth";
 import { ModalContent } from "./modalContent";
 
 export const Header = () => {
-  const [taskOpened, setTaskOpened] = useState<boolean>(false);
+  const [todoOpened, setTodoOpened] = useState<boolean>(false);
   return (
     <header className="w-full h-20 text-black flex items-center justify-around">
       <p>hedda</p>
       <div className="flex space-x-3 items-center">
         <Modal
-          opened={taskOpened}
-          onClose={() => setTaskOpened(false)}
+          opened={todoOpened}
+          onClose={() => setTodoOpened(false)}
           title="タスクを追加"
           centered
         >
@@ -22,7 +22,7 @@ export const Header = () => {
         </Modal>
 
         <Group position="center">
-          <Button onClick={() => setTaskOpened(true)}>タスクを追加</Button>
+          <Button onClick={() => setTodoOpened(true)}>タスクを追加</Button>
         </Group>
         <Auth />
       </div>

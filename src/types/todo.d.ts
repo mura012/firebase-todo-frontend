@@ -1,5 +1,5 @@
 export type Limit = "今日中" | "今週中" | "今月中" | "継続";
-export type Importance = "高" | "中" | "下";
+export type Importance = "高" | "中" | "低";
 export type Todo = {
   task: string;
   limit: Limit;
@@ -7,4 +7,4 @@ export type Todo = {
   isDone: boolean;
 };
 
-export type DatabaseType = Todo & { userId: string };
+export type DatabaseType = Todo & { userId: string; _id: string; __v: number };

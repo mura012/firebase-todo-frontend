@@ -1,6 +1,6 @@
 import { auth } from "@/lib/firebase";
 import { Input, Radio, Button } from "@mantine/core";
-import { useState } from "react";
+import { ComponentProps, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export const ModalContent = () => {
@@ -8,12 +8,30 @@ export const ModalContent = () => {
   const [limit, setLimit] = useState<string>("今日中");
   const [importance, setImportance] = useState<string>("高");
   const [user] = useAuthState(auth);
-  console.log(user);
 
-  const handleClick = (e: any) => {
+  const createTask: ComponentProps<"button">["onClick"] = async (e) => {
     e.preventDefault();
-    console.log({ task, limit, importance, id: auth.currentUser?.email });
+    try {
+      await fetch(process.env.NEXT_PUBLIC_LOCALHOST, {
+        method: "POST",
+        // ↓忘れていたので注意
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user?.email,
+          task,
+          limit,
+          importance,
+          isDone: false,
+        }),
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <>
       <form className="pb-10">
@@ -50,10 +68,14 @@ export const ModalContent = () => {
           >
             <Radio value="高" label="高" />
             <Radio value="中" label="中" />
-            <Radio value="下" label="下" />
+            <Radio value="低" label="低" />
           </Radio.Group>
         </label>
-        <Button className="absolute right-8 bottom-3" onClick={handleClick}>
+        <Button
+          className="absolute right-8 bottom-3"
+          onClick={createTask}
+          disabled={task ? false : true}
+        >
           追加
         </Button>
       </form>
