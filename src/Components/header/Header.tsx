@@ -2,9 +2,9 @@ import { Modal } from "@mantine/core";
 import { Button } from "@mantine/core/";
 import { Group } from "@mantine/core/";
 import { useState } from "react";
-import { Auth } from "../Auth/auth";
+import { Auth } from "../auth/auth";
 
-import { ModalContent } from "./ModalContent";
+import { ModalContent } from "./modalContent";
 
 export const Header = () => {
   const [taskOpened, setTaskOpened] = useState<boolean>(false);

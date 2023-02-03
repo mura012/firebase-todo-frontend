@@ -2,12 +2,13 @@ import { auth } from "@/lib/firebase";
 import Image from "next/image";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { SignIn } from "./AuthButton/SignIn";
-import { SignOut } from "./AuthButton/SignOut";
+import { SignIn } from "./authButton/signIn";
+import { SignOut } from "./authButton/signOut";
 
 export const Auth = () => {
   const [user] = useAuthState(auth);
   const [profileOpened, setProfileOpened] = useState<boolean>(false);
+
   return (
     <>
       {user ? null : <SignIn />}
