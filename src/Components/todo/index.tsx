@@ -1,7 +1,8 @@
 import { useGetTask } from "@/hooks/useGetTask";
 import { auth } from "@/lib/firebase";
-import { Importance, Limit } from "@/types/todo";
+import { DatabaseType, Importance, Limit } from "@/types/todo";
 import { Loader } from "@mantine/core";
+import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export const TodoList = ({
@@ -13,7 +14,30 @@ export const TodoList = ({
 }) => {
   const { data } = useGetTask(process.env.NEXT_PUBLIC_LOCALHOST);
   const [user] = useAuthState(auth);
-  const deleteTodo = () => {};
+  const updateTodo = async (e: any, todo: DatabaseType) => {
+    console.log(!todo.isDone);
+
+    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST}/${todo._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user?.email,
+        task: todo.task,
+        limit: todo.limit,
+        importance: todo.importance,
+        isDone: !todo.isDone,
+      }),
+    });
+    window.location.reload();
+  };
+  const deleteTodo = async (e: any, id: string) => {
+    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST}/${id}`, {
+      method: "delete",
+    });
+    window.location.reload();
+  };
   return (
     <>
       {data
@@ -24,12 +48,34 @@ export const TodoList = ({
             todo.userId === user?.email
         )
         .map((todo) => {
+          console.log(todo);
+
           return (
             <li key={todo._id} className=" flex justify-between items-center">
-              <p className="ml-6">{todo.task}</p>
-              <button className="mr-6" onClick={deleteTodo}>
-                削除
-              </button>
+              {todo.isDone ? (
+                <>
+                  <p className="ml-6 line-through text-decoration-thickness">
+                    {todo.task}
+                  </p>
+                  <p className="text-lg text-red-600">済</p>
+                </>
+              ) : (
+                <p className="ml-6">{todo.task}</p>
+              )}
+              <div className="space-x-1">
+                <button
+                  className="border-0 bg-white cursor-pointer"
+                  onClick={(e) => updateTodo(e, todo)}
+                >
+                  <Image src="/check.png" width={15} height={15} alt="更新" />
+                </button>
+                <button
+                  className="border-0 bg-white cursor-pointer"
+                  onClick={(e) => deleteTodo(e, todo._id)}
+                >
+                  <Image src="/trash.png" width={15} height={15} alt="ゴミ箱" />
+                </button>
+              </div>
             </li>
           );
         })}
@@ -46,7 +92,9 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
 
   return (
     <div className="border-black border-solid mx-2 my-2 min-w-[200px] relative">
-      <h2 className="text-center absolute m-0 -top-4 bg-white ml-3">{`${limit}: ${todoLimitLength}件`}</h2>
+      <h2 className="text-center absolute m-0 -top-4 bg-white ml-3">{`${limit}: ${
+        todoLimitLength ? todoLimitLength : "0"
+      }件`}</h2>
       <ul>
         {isLoading && (
           <li className="mt-5 flex items-center ml-5">
