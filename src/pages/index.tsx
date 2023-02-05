@@ -4,10 +4,14 @@ const Home = () => {
   return (
     <Layout title="home">
       <main className="flex w-screen flex-wrap justify-center">
-        <TodoLists limit="今日中" />
-        <TodoLists limit="今週中" />
-        <TodoLists limit="今月中" />
-        <TodoLists limit="継続" />
+        <div className="flex">
+          <TodoLists limit="今日中" />
+          <TodoLists limit="今週中" />
+        </div>
+        <div className="flex">
+          <TodoLists limit="今月中" />
+          <TodoLists limit="継続" />
+        </div>
       </main>
     </Layout>
   );
