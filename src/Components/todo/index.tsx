@@ -18,8 +18,6 @@ export const TodoList = ({
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const updateTodo = async (e: any, todo: DatabaseType) => {
-    console.log(!todo.isDone);
-
     await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST}/${todo._id}`, {
       method: "PATCH",
       headers: {
@@ -56,16 +54,18 @@ export const TodoList = ({
               {todo.isDone ? (
                 <div>
                   <Image
-                    src="/images/done.jpeg"
-                    width={64}
-                    height={32}
+                    src="/images/done.svg"
+                    width={36}
+                    height={20}
                     alt="済"
                     className="absolute"
                   />
-                  <p className="ml-6 line-through w-36 relative">{todo.task}</p>
+                  <p className="m-0 mb-2 ml-6 line-through w-36 relative ">
+                    {todo.task}
+                  </p>
                 </div>
               ) : (
-                <p className="ml-6 w-36">{todo.task}</p>
+                <p className="m-0 mb-2 ml-6 w-36">{todo.task}</p>
               )}
               <div className="space-x-1 flex">
                 <button
@@ -120,14 +120,20 @@ export const TodoList = ({
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const [user] = useAuthState(auth);
   const { data, isLoading } = useGetTask(process.env.NEXT_PUBLIC_LOCALHOST);
-  const todoLimitLength = data?.filter(
+  const IsMyTask = data?.filter((todo) => todo.userId === user?.email);
+  const checkTaskLength = IsMyTask?.filter(
     (todo) => todo.userId === user?.email && todo.limit === limit
   ).length;
+  const checkImportance = (importance: string, limit: string) => {
+    return IsMyTask?.some(
+      (task) => task.importance === importance && task.limit === limit
+    );
+  };
 
   return (
     <div className="border-black border-solid mx-2 my-2 min-w-[300px] relative">
       <h2 className="text-center absolute m-0 -top-4 bg-white ml-3">{`${limit}: ${
-        todoLimitLength ? todoLimitLength : "0"
+        checkTaskLength ? checkTaskLength : "0"
       }件`}</h2>
       <ul>
         {isLoading && (
@@ -137,8 +143,23 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
           </li>
         )}
         <TodoList limit={limit} importance={"高"} />
+        {checkImportance("高", limit) ? (
+          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
+            ↑優先度「高」
+          </div>
+        ) : null}
         <TodoList limit={limit} importance={"中"} />
+        {checkImportance("中", limit) ? (
+          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
+            ↑優先度「中」
+          </div>
+        ) : null}
         <TodoList limit={limit} importance={"低"} />
+        {checkImportance("低", limit) ? (
+          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
+            ↑優先度「低」
+          </div>
+        ) : null}
       </ul>
     </div>
   );
