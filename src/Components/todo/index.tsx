@@ -1,9 +1,11 @@
 import { useGetTask } from "@/hooks/useGetTask";
 import { auth } from "@/lib/firebase";
 import { DatabaseType, Importance, Limit } from "@/types/todo";
-import { Loader } from "@mantine/core";
+import { Loader, Modal } from "@mantine/core";
 import Image from "next/image";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { UpdateModalContent } from "./updateModalContent";
 
 export const TodoList = ({
   limit,
@@ -13,6 +15,7 @@ export const TodoList = ({
   importance: Importance;
 }) => {
   const { data } = useGetTask(process.env.NEXT_PUBLIC_LOCALHOST);
+  const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const updateTodo = async (e: any, todo: DatabaseType) => {
     console.log(!todo.isDone);
@@ -64,7 +67,7 @@ export const TodoList = ({
               ) : (
                 <p className="ml-6 w-36">{todo.task}</p>
               )}
-              <div className="space-x-1">
+              <div className="space-x-1 flex">
                 <button
                   className="border-0 bg-white cursor-pointer"
                   onClick={(e) => updateTodo(e, todo)}
@@ -73,7 +76,26 @@ export const TodoList = ({
                     src="/images/check.png"
                     width={15}
                     height={15}
-                    alt="更新"
+                    alt="完了"
+                  />
+                </button>
+                <Modal
+                  opened={todoOpened}
+                  onClose={() => setTodoOpened(false)}
+                  title={`${todo.task}を編集`}
+                  centered
+                >
+                  <UpdateModalContent todo={todo} />
+                </Modal>
+                <button
+                  className="border-0 bg-white cursor-pointer"
+                  onClick={() => setTodoOpened(true)}
+                >
+                  <Image
+                    src="/images/change.png"
+                    width={20}
+                    height={20}
+                    alt="編集"
                   />
                 </button>
                 <button

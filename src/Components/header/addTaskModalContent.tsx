@@ -3,9 +3,8 @@ import { Input, Radio, Button } from "@mantine/core";
 import { ComponentProps, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ModalSignInContent } from "../auth/authButton/modalSignInContent";
-import { SignIn } from "../auth/authButton/signIn";
 
-export const ModalContent = () => {
+export const AddTaskModalContent = () => {
   const [task, setTask] = useState<string>("");
   const [limit, setLimit] = useState<string>("今日中");
   const [importance, setImportance] = useState<string>("高");

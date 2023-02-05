@@ -5,15 +5,14 @@ import { Group } from "@mantine/core/";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Auth } from "../auth/auth";
-
-import { ModalContent } from "./modalContent";
+import { AddTaskModalContent } from "./addTaskModalContent";
 
 export const Header = () => {
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   return (
     <header className="w-full h-20 text-black flex items-center justify-around">
-      <p>hedda</p>
+      <p className="font-bold">Todoリスト</p>
       <div className="flex space-x-3 items-center">
         <Modal
           opened={todoOpened}
@@ -21,9 +20,8 @@ export const Header = () => {
           title={user ? "タスクを追加" : "Googleアカウントでサインイン"}
           centered
         >
-          <ModalContent />
+          <AddTaskModalContent />
         </Modal>
-
         <Group position="center">
           <Button onClick={() => setTodoOpened(true)}>タスクを追加</Button>
         </Group>
