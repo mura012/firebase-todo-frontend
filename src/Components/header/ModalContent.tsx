@@ -37,12 +37,15 @@ export const ModalContent = () => {
       <form className="pb-10">
         <label>
           <span>タスク</span>
-          <Input
-            placeholder="勉強"
-            className="mb-3"
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-          />
+          <Input.Wrapper description="20文字以内で入力してください">
+            <Input
+              placeholder="勉強"
+              className="mb-3"
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+            />
+          </Input.Wrapper>
+          <p className="mb-1 -mt-2 text-right">{task.length}/20</p>
         </label>
         <label>
           <span>リミット</span>
@@ -74,7 +77,7 @@ export const ModalContent = () => {
         <Button
           className="absolute right-8 bottom-3"
           onClick={createTask}
-          disabled={task ? false : true}
+          disabled={task && task.length <= 20 ? false : true}
         >
           追加
         </Button>

@@ -1,19 +1,25 @@
-import { auth, provider } from "@/lib/firebase";
-import { signInWithPopup } from "firebase/auth";
-import { Button } from "@mantine/core";
-import Image from "next/image";
+import { Button, Group, Modal } from "@mantine/core";
+import { useState } from "react";
+import { ModalSignInContent } from "./modalSignInContent";
 
 export const SignIn = () => {
-  const handleSignIn = () => {
-    signInWithPopup(auth, provider);
-  };
+  const [todoOpened, setTodoOpened] = useState<boolean>(false);
+
   return (
-    <Button
-      onClick={handleSignIn}
-      className="bg-white text-black shadow-lg border-solid border-black hover:bg-white"
-    >
-      <Image src="/googleLogo.png" width={30} height={30} alt="G" />
-      <p className="ml-4">Sign in with Google</p>
-    </Button>
+    <>
+      <Modal
+        opened={todoOpened}
+        onClose={() => setTodoOpened(false)}
+        title="Googleアカウントでサインイン"
+        centered
+      >
+        <ModalSignInContent />
+      </Modal>
+      <Group position="center">
+        <Button onClick={() => setTodoOpened(true)} color="dark" size="xs">
+          サインイン
+        </Button>
+      </Group>
+    </>
   );
 };

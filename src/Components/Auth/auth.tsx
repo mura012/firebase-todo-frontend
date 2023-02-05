@@ -32,7 +32,7 @@ export const Auth = () => {
           <div className="absolute right-0 z-50 h-32 bg-white border-solid border-black rounded-md">
             {auth.currentUser ? (
               auth.currentUser.photoURL ? (
-                <div className="flex items-center mt-2">
+                <div className="flex items-center mt-1">
                   <Image
                     src={auth.currentUser.photoURL}
                     width={40}
