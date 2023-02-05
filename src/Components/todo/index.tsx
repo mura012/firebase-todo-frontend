@@ -48,32 +48,44 @@ export const TodoList = ({
             todo.userId === user?.email
         )
         .map((todo) => {
-          console.log(todo);
-
           return (
-            <li key={todo._id} className=" flex justify-between items-center">
+            <li key={todo._id} className="flex justify-between items-center">
               {todo.isDone ? (
-                <>
-                  <p className="ml-6 line-through text-decoration-thickness">
-                    {todo.task}
-                  </p>
-                  <p className="text-lg text-red-600">済</p>
-                </>
+                <div>
+                  <Image
+                    src="/images/done.jpeg"
+                    width={64}
+                    height={32}
+                    alt="済"
+                    className="absolute"
+                  />
+                  <p className="ml-6 line-through w-36 relative">{todo.task}</p>
+                </div>
               ) : (
-                <p className="ml-6">{todo.task}</p>
+                <p className="ml-6 w-36">{todo.task}</p>
               )}
               <div className="space-x-1">
                 <button
                   className="border-0 bg-white cursor-pointer"
                   onClick={(e) => updateTodo(e, todo)}
                 >
-                  <Image src="/check.png" width={15} height={15} alt="更新" />
+                  <Image
+                    src="/images/check.png"
+                    width={15}
+                    height={15}
+                    alt="更新"
+                  />
                 </button>
                 <button
                   className="border-0 bg-white cursor-pointer"
                   onClick={(e) => deleteTodo(e, todo._id)}
                 >
-                  <Image src="/trash.png" width={15} height={15} alt="ゴミ箱" />
+                  <Image
+                    src="/images/trash.png"
+                    width={15}
+                    height={15}
+                    alt="ゴミ箱"
+                  />
                 </button>
               </div>
             </li>
@@ -91,7 +103,7 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
   ).length;
 
   return (
-    <div className="border-black border-solid mx-2 my-2 min-w-[200px] relative">
+    <div className="border-black border-solid mx-2 my-2 min-w-[300px] relative">
       <h2 className="text-center absolute m-0 -top-4 bg-white ml-3">{`${limit}: ${
         todoLimitLength ? todoLimitLength : "0"
       }件`}</h2>
