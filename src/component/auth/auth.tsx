@@ -13,20 +13,18 @@ export const Auth = () => {
     <>
       {user ? null : <SignIn />}
       <div className="relative">
-        {auth.currentUser ? (
-          auth.currentUser.photoURL ? (
-            <Image
-              src={auth.currentUser.photoURL}
-              width={40}
-              height={40}
-              alt="icon"
-              className="rounded-full flex"
-              onClick={(e) => {
-                e.preventDefault();
-                setProfileOpened(!profileOpened);
-              }}
-            />
-          ) : null
+        {auth.currentUser && auth.currentUser.photoURL ? (
+          <Image
+            src={auth.currentUser.photoURL}
+            width={50}
+            height={50}
+            alt="icon"
+            className="rounded-full flex mr-3"
+            onClick={(e) => {
+              e.preventDefault();
+              setProfileOpened(!profileOpened);
+            }}
+          />
         ) : null}
         {profileOpened && (
           <div className="absolute right-0 z-50 h-32 bg-white border-solid border-black rounded-md">
@@ -38,7 +36,7 @@ export const Auth = () => {
                     width={40}
                     height={40}
                     alt="icon"
-                    className="rounded-full flex ml-2"
+                    className="rounded-full flex"
                   />
                   <span className="ml-1">{auth.currentUser.displayName}</span>
                 </div>

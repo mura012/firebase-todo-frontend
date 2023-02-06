@@ -11,22 +11,20 @@ export const Header = () => {
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   return (
-    <header className="w-full h-20 text-black flex items-center justify-around">
-      <p className="font-bold">Todoリスト</p>
-      <div className="flex space-x-3 items-center">
-        <Modal
-          opened={todoOpened}
-          onClose={() => setTodoOpened(false)}
-          title={user ? "タスクを追加" : "Googleアカウントでサインイン"}
-          centered
-        >
-          <AddTaskModalContent />
-        </Modal>
-        <Group position="center">
-          <Button onClick={() => setTodoOpened(true)}>タスクを追加</Button>
-        </Group>
-        <Auth />
-      </div>
+    <header className="w-full h-20 text-black flex items-center justify-between">
+      <h1 className="font-bold mx-3">Todoリスト</h1>
+      <Modal
+        opened={todoOpened}
+        onClose={() => setTodoOpened(false)}
+        title={user ? "タスクを追加" : "Googleアカウントでサインイン"}
+        centered
+      >
+        <AddTaskModalContent />
+      </Modal>
+      <Group position="center">
+        <Button onClick={() => setTodoOpened(true)}>タスクを追加</Button>
+      </Group>
+      <Auth />
     </header>
   );
 };

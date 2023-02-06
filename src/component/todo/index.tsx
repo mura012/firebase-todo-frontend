@@ -65,12 +65,12 @@ export const TodoList = ({
                     alt="済"
                     className="absolute"
                   />
-                  <p className="m-0 mb-2 ml-6 line-through w-36 relative ">
+                  <p className="m-0 mb-2 ml-6 line-through w-36 relative  mt-2">
                     {todo.task}
                   </p>
                 </div>
               ) : (
-                <p className="m-0 mb-2 ml-6 w-36">{todo.task}</p>
+                <p className="m-0 mb-2 ml-6 w-36 mt-2">{todo.task}</p>
               )}
               <div className="space-x-1 flex">
                 <button
