@@ -1,6 +1,6 @@
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header/header";
-import { TodoLists } from "@/components/todo";
+import { Footer } from "@/component/footer";
+import { Header } from "@/component/header/header";
+import { TodoLists } from "@/component/todo";
 import { auth } from "@/lib/firebase";
 import Head from "next/head";
 import Image from "next/image";
