@@ -13,20 +13,23 @@ export const AddTaskModalContent = () => {
   const createTask: ComponentProps<"button">["onClick"] = async (e) => {
     e.preventDefault();
     try {
-      await fetch(process.env.NEXT_PUBLIC_LOCALHOST, {
-        method: "POST",
-        // ↓忘れていたので注意
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user?.email,
-          task,
-          limit,
-          importance,
-          isDone: false,
-        }),
-      });
+      await fetch(
+        process.env.NEXT_PUBLIC_ || process.env.NEXT_PUBLIC_BACKEND_API_URL,
+        {
+          method: "POST",
+          // ↓忘れていたので注意
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user?.email,
+            task,
+            limit,
+            importance,
+            isDone: false,
+          }),
+        }
+      );
       window.location.reload();
     } catch (err) {
       console.log(err);

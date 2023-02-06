@@ -14,29 +14,43 @@ export const TodoList = ({
   limit: Limit;
   importance: Importance;
 }) => {
-  const { data } = useGetTask(process.env.NEXT_PUBLIC_LOCALHOST);
+  const { data } = useGetTask(
+    process.env.NEXT_PUBLIC_LOCALHOST || process.env.NEXT_PUBLIC_BACKEND_API_URL
+  );
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const updateTodo = async (e: any, todo: DatabaseType) => {
-    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST}/${todo._id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: user?.email,
-        task: todo.task,
-        limit: todo.limit,
-        importance: todo.importance,
-        isDone: !todo.isDone,
-      }),
-    });
+    await fetch(
+      `${
+        process.env.NEXT_PUBLIC_LOCALHOST ||
+        process.env.NEXT_PUBLIC_BACKEND_API_URL
+      }/${todo._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user?.email,
+          task: todo.task,
+          limit: todo.limit,
+          importance: todo.importance,
+          isDone: !todo.isDone,
+        }),
+      }
+    );
     window.location.reload();
   };
   const deleteTodo = async (e: any, id: string) => {
-    await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST}/${id}`, {
-      method: "delete",
-    });
+    await fetch(
+      `${
+        process.env.NEXT_PUBLIC_LOCALHOST ||
+        process.env.NEXT_PUBLIC_BACKEND_API_URL
+      }/${id}`,
+      {
+        method: "delete",
+      }
+    );
     window.location.reload();
   };
   return (
@@ -119,7 +133,9 @@ export const TodoList = ({
 
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const [user] = useAuthState(auth);
-  const { data, isLoading } = useGetTask(process.env.NEXT_PUBLIC_LOCALHOST);
+  const { data, isLoading } = useGetTask(
+    process.env.NEXT_PUBLIC_LOCALHOST || process.env.NEXT_PUBLIC_BACKEND_API_URL
+  );
   const IsMyTask = data?.filter((todo) => todo.userId === user?.email);
   const checkTaskLength = IsMyTask?.filter(
     (todo) => todo.userId === user?.email && todo.limit === limit

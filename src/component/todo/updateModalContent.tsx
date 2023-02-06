@@ -14,20 +14,26 @@ export const UpdateModalContent = ({ todo }: { todo: DatabaseType }) => {
   const updateTask: ComponentProps<"button">["onClick"] = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_LOCALHOST}/${todo._id}`, {
-        method: "PATCH",
-        // ↓忘れていたので注意
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user?.email,
-          task,
-          limit,
-          importance,
-          isDone: todo.isDone,
-        }),
-      });
+      await fetch(
+        `${
+          process.env.NEXT_PUBLIC_LOCALHOST ||
+          process.env.NEXT_PUBLIC_BACKEND_API_URL
+        }/${todo._id}`,
+        {
+          method: "PATCH",
+          // ↓忘れていたので注意
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user?.email,
+            task,
+            limit,
+            importance,
+            isDone: todo.isDone,
+          }),
+        }
+      );
       window.location.reload();
     } catch (err) {
       console.log(err);
