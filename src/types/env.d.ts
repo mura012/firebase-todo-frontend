@@ -6,7 +6,6 @@ declare namespace NodeJS {
     readonly NEXT_PUBLIC_STORAGE_BUCKET: string;
     readonly NEXT_PUBLIC_MESSAGING_SENDERID: string;
     readonly NEXT_PUBLIC_APP_ID: string;
-    readonly NEXT_PUBLIC_LOCALHOST: string;
     readonly NEXT_PUBLIC_BACKEND_API_URL: string;
   }
 }

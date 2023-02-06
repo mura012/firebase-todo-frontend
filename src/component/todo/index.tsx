@@ -15,7 +15,7 @@ export const TodoList = ({
   importance: Importance;
 }) => {
   const { data } = useGetTask(`
-  ${process.env.NEXT_PUBLIC_LOCALHOST} || ${process.env.NEXT_PUBLIC_BACKEND_API_URL}
+   ${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks
   `);
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
@@ -134,7 +134,7 @@ export const TodoList = ({
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const [user] = useAuthState(auth);
   const { data, isLoading } = useGetTask(`
-  ${process.env.NEXT_PUBLIC_LOCALHOST} || ${process.env.NEXT_PUBLIC_BACKEND_API_URL}
+   ${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks
   `);
   const IsMyTask = data?.filter((todo) => todo.userId === user?.email);
   const checkTaskLength = IsMyTask?.filter(
