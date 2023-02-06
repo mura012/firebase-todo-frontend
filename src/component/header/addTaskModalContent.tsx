@@ -14,7 +14,8 @@ export const AddTaskModalContent = () => {
     e.preventDefault();
     try {
       await fetch(
-        process.env.NEXT_PUBLIC_ || process.env.NEXT_PUBLIC_BACKEND_API_URL,
+        process.env.NEXT_PUBLIC_LOCALHOST ||
+          process.env.NEXT_PUBLIC_BACKEND_API_URL,
         {
           method: "POST",
           // ↓忘れていたので注意
