@@ -82,7 +82,7 @@ export const TodoList = ({
                 <Modal
                   opened={todoOpened}
                   onClose={() => setTodoOpened(false)}
-                  title={`${todo.task}を編集`}
+                  title={`「${todo.task}」を編集`}
                   centered
                 >
                   <UpdateModalContent todo={todo} />
