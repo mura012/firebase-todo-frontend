@@ -21,10 +21,7 @@ export const TodoList = ({
   const [user] = useAuthState(auth);
   const updateTodo = async (e: any, todo: DatabaseType) => {
     await fetch(
-      `${
-        process.env.NEXT_PUBLIC_LOCALHOST ||
-        process.env.NEXT_PUBLIC_BACKEND_API_URL
-      }/${todo._id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${todo._id}`,
       {
         method: "PATCH",
         headers: {
@@ -42,15 +39,9 @@ export const TodoList = ({
     window.location.reload();
   };
   const deleteTodo = async (e: any, id: string) => {
-    await fetch(
-      `${
-        process.env.NEXT_PUBLIC_LOCALHOST ||
-        process.env.NEXT_PUBLIC_BACKEND_API_URL
-      }/${id}`,
-      {
-        method: "delete",
-      }
-    );
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${id}`, {
+      method: "delete",
+    });
     window.location.reload();
   };
   return (

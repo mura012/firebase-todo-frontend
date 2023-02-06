@@ -15,10 +15,7 @@ export const UpdateModalContent = ({ todo }: { todo: DatabaseType }) => {
     e.preventDefault();
     try {
       await fetch(
-        `${
-          process.env.NEXT_PUBLIC_LOCALHOST ||
-          process.env.NEXT_PUBLIC_BACKEND_API_URL
-        }/${todo._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${todo._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
