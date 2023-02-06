@@ -12,7 +12,7 @@ export const ModalSignInContent = () => {
       onClick={handleSignIn}
       className="bg-white text-black shadow-lg border-solid border-black hover:bg-white"
     >
-      <Image src="/googleLogo.png" width={30} height={30} alt="G" />
+      <Image src="images/googleLogo.png" width={30} height={30} alt="G" />
       <p className="ml-4">Sign in with Google</p>
     </Button>
   );
