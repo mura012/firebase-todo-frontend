@@ -22,7 +22,9 @@ export const Header = () => {
         <AddTaskModalContent />
       </Modal>
       <Group position="center">
-        <Button onClick={() => setTodoOpened(true)}>タスクを追加</Button>
+        <Button onClick={() => setTodoOpened(true)}>
+          {user ? "タスクを追加" : "サインイン"}
+        </Button>
       </Group>
       <Auth />
     </header>

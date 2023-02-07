@@ -2,7 +2,6 @@ import { auth } from "@/lib/firebase";
 import Image from "next/image";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { SignIn } from "./authButton/signIn";
 import { SignOut } from "./authButton/signOut";
 
 export const Auth = () => {
@@ -11,7 +10,6 @@ export const Auth = () => {
 
   return (
     <>
-      {user ? null : <SignIn />}
       <div className="relative">
         {auth.currentUser && auth.currentUser.photoURL ? (
           <Image
@@ -25,7 +23,19 @@ export const Auth = () => {
               setProfileOpened(!profileOpened);
             }}
           />
-        ) : null}
+        ) : (
+          <Image
+            src="/images/defaultIcon.png"
+            width={50}
+            height={40}
+            alt="icon"
+            className="rounded-full flex mr-3"
+            onClick={(e) => {
+              e.preventDefault();
+              setProfileOpened(!profileOpened);
+            }}
+          />
+        )}
         {profileOpened && (
           <div className="absolute right-0 z-50 h-32 bg-white border-solid border-black rounded-md">
             {auth.currentUser ? (
