@@ -30,27 +30,21 @@ export const Auth = () => {
             height={40}
             alt="icon"
             className="rounded-full flex mr-3"
-            onClick={(e) => {
-              e.preventDefault();
-              setProfileOpened(!profileOpened);
-            }}
           />
         )}
         {profileOpened && (
           <div className="absolute right-0 z-50 h-32 bg-white border-solid border-black rounded-md">
-            {auth.currentUser ? (
-              auth.currentUser.photoURL ? (
-                <div className="flex items-center mt-1">
-                  <Image
-                    src={auth.currentUser.photoURL}
-                    width={40}
-                    height={40}
-                    alt="icon"
-                    className="rounded-full flex"
-                  />
-                  <span className="ml-1">{auth.currentUser.displayName}</span>
-                </div>
-              ) : null
+            {auth.currentUser && auth.currentUser.photoURL ? (
+              <div className="flex items-center mt-1 ml-3">
+                <Image
+                  src={auth.currentUser.photoURL}
+                  width={40}
+                  height={40}
+                  alt="icon"
+                  className="rounded-full flex"
+                />
+                <span className="ml-1">{auth.currentUser.displayName}</span>
+              </div>
             ) : null}
             <SignOut setProfileOpened={setProfileOpened} />
           </div>

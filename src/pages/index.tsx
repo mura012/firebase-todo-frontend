@@ -12,7 +12,7 @@ const Home = () => {
       <Head>
         <title>Todoリスト</title>
       </Head>
-      <div className="w-full items-center flex flex-col min-h-screen">
+      <div className="w-full items-center flex flex-col min-h-screen bg-green-300">
         <Header />
         {!user ? (
           <div className="mb-3 bg-yellow-200 text-gray-500 px-3 flex items-center">

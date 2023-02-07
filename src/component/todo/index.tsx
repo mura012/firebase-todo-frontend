@@ -1,7 +1,7 @@
 import { useGetTask } from "@/hooks/useGetTask";
 import { auth } from "@/lib/firebase";
 import { DatabaseType, Importance, Limit } from "@/types/todo";
-import { Loader, Modal } from "@mantine/core";
+import { CheckIcon, Loader, Modal } from "@mantine/core";
 import Image from "next/image";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -138,8 +138,8 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
   };
 
   return (
-    <div className="border-black border-solid mx-2 my-2 min-w-[300px] relative">
-      <h2 className="text-center absolute m-0 -top-4 bg-white ml-3 px-1">{`${limit}: ${
+    <div className="border-black border-solid mx-2 my-2 min-w-[300px] bg-white">
+      <h2 className="text-center m-0 ml-3 px-1">{`${limit}: ${
         checkTaskLength ? checkTaskLength : "0"
       }件`}</h2>
       <ul>
