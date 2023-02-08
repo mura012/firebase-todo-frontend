@@ -21,11 +21,11 @@ const Home = () => {
           </div>
         ) : null}
         <main className="flex w-screen flex-wrap justify-center flex-1">
-          <div className="flex">
+          <div className="flex flex-col xs:flex-row">
             <TodoLists limit="今日中" />
             <TodoLists limit="今週中" />
           </div>
-          <div className="flex">
+          <div className="flex flex-col xs:flex-row">
             <TodoLists limit="今月中" />
             <TodoLists limit="継続" />
           </div>
