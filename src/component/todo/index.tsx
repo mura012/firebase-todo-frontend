@@ -139,7 +139,7 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
 
   return (
     <div className="border-black border-solid mx-2 my-2 min-w-[300px] bg-white">
-      <h2 className="text-center m-0 ml-3 px-1">{`${limit}: ${
+      <h2 className="text-center m-0 ml-3 px-1 mt-2">{`${limit}: ${
         checkTaskLength ? checkTaskLength : "0"
       }件`}</h2>
       <ul>
