@@ -15,13 +15,13 @@ const Home = () => {
       <div className="w-full items-center flex flex-col min-h-screen bg-green-300">
         <Header />
         {!user ? (
-          <div className="mb-3 bg-yellow-200 text-gray-500 px-3 flex items-center">
+          <div className="mb-3 bg-yellow-200 text-gray-500 px-3 flex items-center mt-2">
             <Image src="/images/announce.jpg" width={20} height={20} alt="" />
             <p>Googleでサインインすれば、タスクを追加できます</p>
           </div>
         ) : null}
         <main className="flex w-screen flex-wrap justify-center flex-1">
-          <div className="flex flex-col xs:flex-row">
+          <div className="flex flex-col xs:flex-row mb-2">
             <TodoLists limit="今日中" />
             <TodoLists limit="今週中" />
           </div>
