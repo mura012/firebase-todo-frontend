@@ -1,4 +1,4 @@
-import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
+import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
 import { Input, Button, Radio } from "@mantine/core";
 import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ export const AddTaskModalContent = () => {
   const [limit, setLimit] = useState("今日中");
   const [importance, setImportance] = useState("高");
   const [user] = useAuthState(auth);
-  const { data } = useGetRecordsByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
   const addTask: ComponentProps<"button">["onClick"] = async (e) => {
     const newTasks = [data?.tasks, { task, limit, importance, isDone: false }];
 
@@ -39,10 +39,12 @@ export const AddTaskModalContent = () => {
 
   return (
     <>
-      <form className="pb-10">
+      <form className="pb-10" onSubmit={(e) => e.preventDefault()}>
         <label>
-          <span>タスク</span>
-          <Input.Wrapper description="20文字以内で入力してください">
+          <Input.Wrapper
+            label="タスク"
+            description="20文字以内で入力してください"
+          >
             <Input
               placeholder="勉強"
               className="mb-3"
@@ -53,12 +55,12 @@ export const AddTaskModalContent = () => {
           <p className="mb-1 -mt-2 text-right">{task.length}/20</p>
         </label>
         <label>
-          <span>リミット</span>
           <Radio.Group
             description="このタスクはいつまでに行わなければいけませんか？"
             className="mb-3"
             value={limit}
             onChange={setLimit}
+            label="リミット"
           >
             <Radio value="今日中" label="今日中" />
             <Radio value="今週中" label="今週中" />
@@ -67,12 +69,12 @@ export const AddTaskModalContent = () => {
           </Radio.Group>
         </label>
         <label>
-          <span>優先度</span>
           <Radio.Group
             description="このタスクの優先度はどれくらいですか？"
             defaultValue="高"
             value={importance}
             onChange={setImportance}
+            label="優先度"
           >
             <Radio value="高" label="高" />
             <Radio value="中" label="中" />

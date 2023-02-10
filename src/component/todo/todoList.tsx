@@ -1,27 +1,24 @@
-import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
+import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
-import { DatabaseType, Importance, Limit, Tasks } from "@/types/todo";
+import { Importance, Limit, Tasks } from "@/types/todo";
 import { Modal } from "@mantine/core";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Loading } from "../loading";
-import { UpdateModalContent } from "./updateModalContent";
+import { UpdateModalContent } from "../modalContent/updateModalContent";
 
 export const TodoList = ({
   limit,
   importance,
-  todo,
 }: {
   limit: Limit;
   importance: Importance;
-  todo: DatabaseType | undefined;
 }) => {
   const router = useRouter();
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
-  const [user] = useAuthState(auth);
-  const { data } = useGetRecordsByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
   const updateTodo = async (e: any, todo: Tasks) => {
     e.preventDefault();
     const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
@@ -157,9 +154,7 @@ export const TodoList = ({
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { data, isLoading } = useGetRecordsByName(
-    `myTask/${router.query.name}`
-  );
+  const { data, isLoading } = useGetRecordByName(`myTask/${router.query.name}`);
 
   const checkTaskLength = data?.tasks.filter(
     (todo) => todo.limit === limit
@@ -181,19 +176,19 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
             <Loading />
           </li>
         )}
-        <TodoList limit={limit} importance={"高"} todo={data} />
+        <TodoList limit={limit} importance={"高"} />
         {checkImportance("高", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「高」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"中"} todo={data} />
+        <TodoList limit={limit} importance={"中"} />
         {checkImportance("中", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「中」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"低"} todo={data} />
+        <TodoList limit={limit} importance={"低"} />
         {checkImportance("低", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「低」

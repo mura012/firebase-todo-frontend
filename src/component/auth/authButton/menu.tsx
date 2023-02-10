@@ -14,24 +14,7 @@ export const Menu = ({}: {}) => {
   const handleSignIn = () => {
     signInWithPopup(auth, provider);
   };
-  // const handleAllDelete: ComponentProps<"button">["onClick"] = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/all`, {
-  //       method: "delete",
-  //       // ↓忘れていたので注意
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         userId: user?.email,
-  //       }),
-  //     });
-  //     window.location.reload();
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+
   return (
     <>
       <Button

@@ -1,7 +1,7 @@
 import { DatabaseType } from "@/types/todo";
 import useSWR from "swr";
 
-export const useGetRecordsByName = (url: string) => {
+export const useGetRecordByName = (url: string) => {
   const fetcher = async (input: RequestInfo, init?: RequestInit) => {
     const res = await fetch(input, init);
     return res.json();

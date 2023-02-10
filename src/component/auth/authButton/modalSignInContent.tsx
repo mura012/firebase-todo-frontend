@@ -2,10 +2,13 @@ import { auth, provider } from "@/lib/firebase";
 import { Button } from "@mantine/core";
 import { signInWithPopup } from "firebase/auth";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export const ModalSignInContent = () => {
+  const router = useRouter();
   const handleSignIn = () => {
     signInWithPopup(auth, provider);
+    router.push("/");
   };
   return (
     <Button

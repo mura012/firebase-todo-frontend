@@ -1,11 +1,9 @@
 import { auth } from "@/lib/firebase";
 import Image from "next/image";
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { Menu } from "./authButton/menu";
 
 export const Auth = () => {
-  const [user] = useAuthState(auth);
   const [profileOpened, setProfileOpened] = useState<boolean>(false);
 
   return (

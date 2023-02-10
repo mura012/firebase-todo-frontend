@@ -1,16 +1,25 @@
 import { AdminContent } from "@/component/adminContent/adminContent";
-import { Footer } from "@/component/footer";
-import { Header } from "@/component/header/header";
+import { NoAdmin } from "@/component/adminContent/noAdmin";
+import { Layout } from "@/layout/layout";
+import { auth } from "@/lib/firebase";
 import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Admin = () => {
+  const [user] = useAuthState(auth);
+
   const router = useRouter();
+  if (!user) {
+    return (
+      <Layout title="管理者画面">
+        <NoAdmin />
+      </Layout>
+    );
+  }
   return (
-    <div>
-      <Header />
+    <Layout title="管理者画面">
       <AdminContent name={router.query.name} />
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

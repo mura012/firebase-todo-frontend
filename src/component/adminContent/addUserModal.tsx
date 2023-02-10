@@ -1,4 +1,4 @@
-import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
+import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { TeamUser } from "@/types/todo";
 import { Button, Input } from "@mantine/core";
 import { useRouter } from "next/router";
@@ -9,7 +9,7 @@ type User = Pick<TeamUser, "name" | "email">;
 export const AddUserModal = () => {
   const [newUser, setNewUser] = useState<User>({ name: "", email: "" });
   const router = useRouter();
-  const { data } = useGetRecordsByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
   const addUser = async () => {
     const addUser = [
       data?.teamUser,
@@ -31,7 +31,7 @@ export const AddUserModal = () => {
           }),
         }
       );
-      // window.location.reload();
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -40,25 +40,27 @@ export const AddUserModal = () => {
   return (
     <form className="pb-10">
       <label>
-        <span>ユーザー名</span>
-        <Input
-          value={newUser.name}
-          onChange={(e) =>
-            setNewUser({ name: e.target.value, email: newUser.email })
-          }
-        />
+        <Input.Wrapper label="ユーザー名">
+          <Input
+            value={newUser.name}
+            onChange={(e) =>
+              setNewUser({ name: e.target.value, email: newUser.email })
+            }
+          />
+        </Input.Wrapper>
       </label>
       <label>
-        <span>メールアドレス</span>
-        <Input
-          value={newUser.email}
-          onChange={(e) =>
-            setNewUser({
-              name: newUser.name,
-              email: e.target.value,
-            })
-          }
-        />
+        <Input.Wrapper label="メールアドレス">
+          <Input
+            value={newUser.email}
+            onChange={(e) =>
+              setNewUser({
+                name: newUser.name,
+                email: e.target.value,
+              })
+            }
+          />
+        </Input.Wrapper>
       </label>
       <Button className="absolute right-3 bottom-3" onClick={addUser}>
         追加

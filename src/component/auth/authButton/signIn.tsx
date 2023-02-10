@@ -5,7 +5,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { ModalSignInContent } from "./modalSignInContent";
 
 export const SignIn = () => {
-  const [user] = useAuthState(auth);
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
 
   return (

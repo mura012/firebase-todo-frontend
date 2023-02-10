@@ -37,8 +37,10 @@ export const CreateTeamModalContent = () => {
     <>
       <form className="pb-10" onSubmit={createTask}>
         <label>
-          <span>名前</span>
-          <Input.Wrapper description="20文字以内で入力してください">
+          <Input.Wrapper
+            description="20文字以内で入力してください"
+            label="名前"
+          >
             <Input
               placeholder="案件"
               className="mb-3"

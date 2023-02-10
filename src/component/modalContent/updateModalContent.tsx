@@ -1,4 +1,4 @@
-import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
+import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
 import { Tasks } from "@/types/todo";
 import { Button, Input, Radio } from "@mantine/core";
@@ -18,7 +18,7 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
   const [importance, setImportance] = useState<string>(todo.importance);
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { data } = useGetRecordsByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
   const updateTask = async ({ e, id }: Props) => {
     e.preventDefault();
     const prevData = await data?.tasks?.filter((task) => task._id !== id);
