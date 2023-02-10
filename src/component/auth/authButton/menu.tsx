@@ -40,13 +40,8 @@ export const Menu = ({}: {}) => {
       >
         <p className="m-0">{user ? "サインアウト" : "サインイン"}</p>
       </Button>
-      {/* <Button
-        onClick={handleAllDelete}
-        className=" text-black hover:bg-blue-300 bg-white w-full"
-      >
-        <p className="m-0">タスクをすべて削除</p>
-      </Button> */}
-      {user && (
+
+      {user && router.pathname !== "/" && (
         <Button className=" text-black hover:bg-blue-300 bg-white w-full">
           <Link
             href={

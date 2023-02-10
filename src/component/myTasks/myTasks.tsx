@@ -3,16 +3,17 @@ import { auth } from "@/lib/firebase";
 import { TeamUser, Todo } from "@/types/todo";
 import { Button, Input } from "@mantine/core";
 import Link from "next/link";
-import { useState } from "react";
+import { ComponentProps, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Loading } from "../loading";
 
 export const MyTasks = () => {
   const [user] = useAuthState(auth);
   const [email, setEmail] = useState<string>("");
   const [adminData, setAdminData] = useState([]);
-  const { data } = useGetRecordsByEmail(`myTasks/${user?.email}`);
-  const handleSearch = async () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data, isLoading } = useGetRecordsByEmail(`myTasks/${user?.email}`);
+  const handleSearch: ComponentProps<"form">["onSubmit"] = async (e) => {
+    e.preventDefault();
     const data = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/adminTasks/${email}`
     );
@@ -23,6 +24,7 @@ export const MyTasks = () => {
     <div className="bg-gray-100 flex flex-col">
       <>
         <p>あなたが作成したチーム</p>
+        {isLoading ? <Loading /> : null}
         {data?.map((task) => {
           return (
             <Link key={task._id} href={`/team/${task.name}`}>
@@ -30,7 +32,7 @@ export const MyTasks = () => {
             </Link>
           );
         })}
-        <form>
+        <form onSubmit={handleSearch}>
           <label>
             <span>メールアドレス</span>
             <Input
@@ -39,7 +41,7 @@ export const MyTasks = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
-          <Button onClick={handleSearch}>検索</Button>
+          <Button type="submit">検索</Button>
         </form>
         {adminData.map((item: Todo) => {
           return item.teamUser?.map((team: TeamUser) => {

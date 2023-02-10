@@ -14,7 +14,7 @@ export const AddUserModal = () => {
     const addUser = [
       data?.teamUser,
       { name: newUser.name, email: newUser.email },
-    ];
+    ].flat();
 
     try {
       await fetch(
@@ -27,11 +27,11 @@ export const AddUserModal = () => {
           },
           body: JSON.stringify({
             ...data,
-            teamUser: addUser.flat(),
+            teamUser: addUser,
           }),
         }
       );
-      window.location.reload();
+      // window.location.reload();
     } catch (err) {
       console.log(err);
     }

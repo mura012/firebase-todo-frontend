@@ -1,5 +1,6 @@
 import { auth } from "@/lib/firebase";
 import { Button, Modal } from "@mantine/core";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,7 +15,9 @@ export const Header = () => {
 
   return (
     <header className="w-full h-20 text-black flex items-center justify-between bg-yellow-200">
-      <h1 className="font-bold ml-3 text-lg xs:text-3xl">Todoリスト</h1>
+      <Link href="/">
+        <h1 className="font-bold ml-3 text-lg xs:text-3xl">Todoリスト</h1>
+      </Link>
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}

@@ -1,51 +1,82 @@
 import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
 import { DatabaseType, Importance, Limit, Tasks } from "@/types/todo";
-import { Loader, Modal } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Loading } from "../loading";
 import { UpdateModalContent } from "./updateModalContent";
 
 export const TodoList = ({
   limit,
   importance,
-  data,
+  todo,
 }: {
   limit: Limit;
   importance: Importance;
-  data: DatabaseType | undefined;
+  todo: DatabaseType | undefined;
 }) => {
+  const router = useRouter();
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
+  const { data } = useGetRecordsByName(`myTask/${router.query.name}`);
   const updateTodo = async (e: any, todo: Tasks) => {
-    // await fetch(
-    //   `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${todo._id}`,
-    //   {
-    //     method: "PATCH",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       userId: user?.email,
-    //       task: todo.task,
-    //       limit: todo.limit,
-    //       importance: todo.importance,
-    //       isDone: !todo.isDone,
-    //       photo: todo.,
-    //       displayName: user?.displayName,
-    //       _id: todo._id,
-    //     }),
-    //   }
-    // );
-    // window.location.reload();
+    e.preventDefault();
+    const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
+
+    const newData = [
+      prevData,
+      {
+        task: todo.task,
+        limit: todo.limit,
+        importance: todo.importance,
+        isDone: todo.isDone ? false : true,
+        _id: todo._id,
+      },
+    ].flat();
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            tasks: newData,
+          }),
+        }
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const deleteTodo = async (e: any, id: string) => {
-    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${id}`, {
-      method: "delete",
-    });
-    window.location.reload();
+  const deleteTodo = async (e: any, todo: Tasks) => {
+    e.preventDefault();
+    const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
+
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            tasks: prevData,
+          }),
+        }
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -106,7 +137,7 @@ export const TodoList = ({
                 </button>
                 <button
                   className="border-0 bg-white cursor-pointer"
-                  onClick={(e) => deleteTodo(e, todo._id)}
+                  onClick={(e) => deleteTodo(e, todo)}
                 >
                   <Image
                     src="/images/trash.png"
@@ -147,23 +178,22 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
       <ul>
         {isLoading && (
           <li className="mt-5 flex items-center ml-5">
-            <Loader />
-            <span>Loading...</span>
+            <Loading />
           </li>
         )}
-        <TodoList limit={limit} importance={"高"} data={data} />
+        <TodoList limit={limit} importance={"高"} todo={data} />
         {checkImportance("高", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「高」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"中"} data={data} />
+        <TodoList limit={limit} importance={"中"} todo={data} />
         {checkImportance("中", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「中」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"低"} data={data} />
+        <TodoList limit={limit} importance={"低"} todo={data} />
         {checkImportance("低", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「低」

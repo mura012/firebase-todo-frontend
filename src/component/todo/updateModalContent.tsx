@@ -1,21 +1,34 @@
+import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
 import { Tasks } from "@/types/todo";
 import { Button, Input, Radio } from "@mantine/core";
-import { ComponentProps, useState } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ModalSignInContent } from "../auth/authButton/modalSignInContent";
+
+type Props = {
+  e: any;
+  id: string;
+};
 
 export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
   const [task, setTask] = useState<string>(todo.task);
   const [limit, setLimit] = useState<string>(todo.limit);
   const [importance, setImportance] = useState<string>(todo.importance);
   const [user] = useAuthState(auth);
-
-  const updateTask: ComponentProps<"button">["onClick"] = async (e) => {
+  const router = useRouter();
+  const { data } = useGetRecordsByName(`myTask/${router.query.name}`);
+  const updateTask = async ({ e, id }: Props) => {
     e.preventDefault();
+    const prevData = await data?.tasks?.filter((task) => task._id !== id);
+    const newData = [
+      prevData,
+      { task, limit, importance, isDone: todo.isDone, _id: todo._id },
+    ].flat();
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${todo._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
@@ -23,11 +36,8 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userId: user?.email,
-            task,
-            limit,
-            importance,
-            isDone: todo.isDone,
+            ...data,
+            tasks: newData,
           }),
         }
       );
@@ -40,7 +50,7 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
   return (
     <>
       {user ? (
-        <form className="pb-10">
+        <form className="pb-10" onSubmit={(e) => e.preventDefault()}>
           <label>
             <span>タスク</span>
             <Input.Wrapper description="20文字以内で入力してください">
@@ -82,7 +92,7 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
           </label>
           <Button
             className="absolute right-8 bottom-3"
-            onClick={updateTask}
+            onClick={(e) => updateTask({ e, id: todo._id })}
             disabled={task && task.length <= 20 ? false : true}
           >
             編集

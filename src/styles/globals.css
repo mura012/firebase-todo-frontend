@@ -10,3 +10,13 @@ h1 {
 ul {
   padding: 0;
 }
+a {
+  color: #000;
+  text-decoration: none;
+}
+a:active {
+  color: #000000;
+}
+a:focus {
+  outline: none;
+}
