@@ -1,11 +1,11 @@
 import { auth } from "@/lib/firebase";
-import { DatabaseType } from "@/types/todo";
+import { Tasks } from "@/types/todo";
 import { Button, Input, Radio } from "@mantine/core";
 import { ComponentProps, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ModalSignInContent } from "../auth/authButton/modalSignInContent";
 
-export const UpdateModalContent = ({ todo }: { todo: DatabaseType }) => {
+export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
   const [task, setTask] = useState<string>(todo.task);
   const [limit, setLimit] = useState<string>(todo.limit);
   const [importance, setImportance] = useState<string>(todo.importance);

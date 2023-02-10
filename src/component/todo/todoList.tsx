@@ -1,8 +1,9 @@
-import { useGetTask } from "@/hooks/useGetTask";
+import { useGetRecordsByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
-import { DatabaseType, Importance, Limit } from "@/types/todo";
-import { CheckIcon, Loader, Modal } from "@mantine/core";
+import { DatabaseType, Importance, Limit, Tasks } from "@/types/todo";
+import { Loader, Modal } from "@mantine/core";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { UpdateModalContent } from "./updateModalContent";
@@ -10,33 +11,35 @@ import { UpdateModalContent } from "./updateModalContent";
 export const TodoList = ({
   limit,
   importance,
+  data,
 }: {
   limit: Limit;
   importance: Importance;
+  data: DatabaseType | undefined;
 }) => {
-  const { data } = useGetTask(`
-   ${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks
-  `);
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
-  const updateTodo = async (e: any, todo: DatabaseType) => {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${todo._id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user?.email,
-          task: todo.task,
-          limit: todo.limit,
-          importance: todo.importance,
-          isDone: !todo.isDone,
-        }),
-      }
-    );
-    window.location.reload();
+  const updateTodo = async (e: any, todo: Tasks) => {
+    // await fetch(
+    //   `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${todo._id}`,
+    //   {
+    //     method: "PATCH",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       userId: user?.email,
+    //       task: todo.task,
+    //       limit: todo.limit,
+    //       importance: todo.importance,
+    //       isDone: !todo.isDone,
+    //       photo: todo.,
+    //       displayName: user?.displayName,
+    //       _id: todo._id,
+    //     }),
+    //   }
+    // );
+    // window.location.reload();
   };
   const deleteTodo = async (e: any, id: string) => {
     await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks/${id}`, {
@@ -44,14 +47,12 @@ export const TodoList = ({
     });
     window.location.reload();
   };
+
   return (
     <>
-      {data
+      {data?.tasks
         ?.filter(
-          (todo) =>
-            todo.limit === limit &&
-            todo.importance === importance &&
-            todo.userId === user?.email
+          (todo) => todo.importance === importance && todo.limit === limit
         )
         .map((todo) => {
           return (
@@ -70,9 +71,9 @@ export const TodoList = ({
                   </p>
                 </div>
               ) : (
-                <p className="m-0 mb-2 ml-6 w-36 mt-2">{todo.task}</p>
+                <p className="m-0 mb-2 ml-6 max-w-[130px] mt-2">{todo.task}</p>
               )}
-              <div className="space-x-1 flex">
+              <div className="flex">
                 <button
                   className="border-0 bg-white cursor-pointer"
                   onClick={(e) => updateTodo(e, todo)}
@@ -124,15 +125,16 @@ export const TodoList = ({
 
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const [user] = useAuthState(auth);
-  const { data, isLoading } = useGetTask(`
-   ${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tasks
-  `);
-  const IsMyTask = data?.filter((todo) => todo.userId === user?.email);
-  const checkTaskLength = IsMyTask?.filter(
-    (todo) => todo.userId === user?.email && todo.limit === limit
+  const router = useRouter();
+  const { data, isLoading } = useGetRecordsByName(
+    `myTask/${router.query.name}`
+  );
+
+  const checkTaskLength = data?.tasks.filter(
+    (todo) => todo.limit === limit
   ).length;
   const checkImportance = (importance: string, limit: string) => {
-    return IsMyTask?.some(
+    return data?.tasks.some(
       (task) => task.importance === importance && task.limit === limit
     );
   };
@@ -149,19 +151,19 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
             <span>Loading...</span>
           </li>
         )}
-        <TodoList limit={limit} importance={"高"} />
+        <TodoList limit={limit} importance={"高"} data={data} />
         {checkImportance("高", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「高」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"中"} />
+        <TodoList limit={limit} importance={"中"} data={data} />
         {checkImportance("中", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「中」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"低"} />
+        <TodoList limit={limit} importance={"低"} data={data} />
         {checkImportance("低", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
             ↑優先度「低」
