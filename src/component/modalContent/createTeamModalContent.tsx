@@ -27,7 +27,7 @@ export const CreateTeamModalContent = () => {
           teamUser: [],
         }),
       });
-      router.push(`/team/${name}`);
+      router.push(`/task/${name}`);
     } catch (err) {
       console.log(err);
     }

@@ -30,7 +30,7 @@ export const MyTasks = () => {
           return (
             <Link
               key={task._id}
-              href={`/team/${task.name}`}
+              href={`/task/${task.name}`}
               className="before:content-['▶'] my-1 hover:bg-gray-200"
             >
               {task.name}
@@ -59,7 +59,7 @@ export const MyTasks = () => {
             return team.email === user?.email ? (
               <Link
                 key={team._id}
-                href={`/team/${item.name}`}
+                href={`/task/${item.name}`}
                 className="before:content-['▶'] my-1 hover:bg-gray-200"
               >
                 {item.name}

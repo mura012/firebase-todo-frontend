@@ -28,14 +28,14 @@ export const Menu = ({}: {}) => {
         <Button className=" text-black hover:bg-blue-300 bg-white w-full">
           <Link
             href={
-              router.route === "/team/[name]"
-                ? `/team/${router.query.name}/admin`
-                : `/team/${router.query.name}`
+              router.route === "/task/[name]"
+                ? `/task/${router.query.name}/admin`
+                : `/task/${router.query.name}`
             }
             className="text-black no-underline"
           >
             <p className="m-0">{`${
-              router.route === "/team/[name]/admin"
+              router.route === "/task/[name]/admin"
                 ? "Todo一覧ページ"
                 : "管理者画面"
             }へ移動`}</p>
