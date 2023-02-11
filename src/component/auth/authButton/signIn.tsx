@@ -1,7 +1,5 @@
-import { auth } from "@/lib/firebase";
 import { Button, Group, Modal } from "@mantine/core";
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { ModalSignInContent } from "./modalSignInContent";
 
 export const SignIn = () => {

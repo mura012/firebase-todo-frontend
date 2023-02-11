@@ -23,7 +23,7 @@ export const Entrust = () => {
             >
               <EntrustModalContent id={task._id} data={data} task={task.task} />
             </Modal>
-            <Button onClick={() => setModalOpened(true)}>
+            <Button onClick={() => setModalOpened(true)} color="dark" size="xs">
               タスクを割り振る
             </Button>
           </div>

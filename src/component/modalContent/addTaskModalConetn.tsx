@@ -59,10 +59,10 @@ export const AddTaskModalContent = () => {
             onChange={setLimit}
             label="リミット"
           >
-            <Radio value="今日中" label="今日中" />
-            <Radio value="今週中" label="今週中" />
-            <Radio value="今月中" label="今月中" />
-            <Radio value="継続" label="継続" />
+            <Radio color="dark" value="今日中" label="今日中" />
+            <Radio color="dark" value="今週中" label="今週中" />
+            <Radio color="dark" value="今月中" label="今月中" />
+            <Radio color="dark" value="継続" label="継続" />
           </Radio.Group>
         </label>
         <label>
@@ -73,15 +73,17 @@ export const AddTaskModalContent = () => {
             onChange={setImportance}
             label="優先度"
           >
-            <Radio value="高" label="高" />
-            <Radio value="中" label="中" />
-            <Radio value="低" label="低" />
+            <Radio color="dark" value="高" label="高" />
+            <Radio color="dark" value="中" label="中" />
+            <Radio color="dark" value="低" label="低" />
           </Radio.Group>
         </label>
         <Button
           className="absolute right-8 bottom-3"
           onClick={addTask}
           disabled={task && task.length <= 20 ? false : true}
+          color="dark"
+          size="xs"
         >
           追加
         </Button>

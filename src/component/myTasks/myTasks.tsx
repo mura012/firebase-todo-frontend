@@ -30,7 +30,7 @@ export const MyTasks = () => {
           <Link
             key={task._id}
             href={`/task/${task.name}`}
-            className="mx-5 before:content-['▶'] my-1 hover:bg-gray-200"
+            className="mx-5 before:content-['▶'] my-1 hover:bg-gray-200 p-1"
           >
             {task.name}
           </Link>
@@ -50,7 +50,12 @@ export const MyTasks = () => {
             />
           </Input.Wrapper>
         </label>
-        <Button type="submit" className="absolute right-5 mt-1">
+        <Button
+          type="submit"
+          className="absolute right-5 mt-1"
+          color="dark"
+          size="xs"
+        >
           検索
         </Button>
       </form>
@@ -60,7 +65,7 @@ export const MyTasks = () => {
             <Link
               key={team._id}
               href={`/task/${item.name}`}
-              className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5"
+              className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5 p-1"
             >
               {item.name}
             </Link>

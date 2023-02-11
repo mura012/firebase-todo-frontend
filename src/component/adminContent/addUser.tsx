@@ -42,7 +42,9 @@ export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
       >
         <AddUserModal />
       </Modal>
-      <Button onClick={() => setModalOpened(true)}>ユーザーを追加</Button>
+      <Button onClick={() => setModalOpened(true)} color="dark" size="xs">
+        ユーザーを追加
+      </Button>
       <ul>
         {teamUser?.map((item) => {
           return (
@@ -53,7 +55,11 @@ export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
               </div>
               <div className="flex justify-center">
                 <Group position="center">
-                  <Button onClick={() => setDialogOpened((o) => !o)}>
+                  <Button
+                    onClick={() => setDialogOpened((o) => !o)}
+                    color="dark"
+                    size="xs"
+                  >
                     削除
                   </Button>
                 </Group>
@@ -69,7 +75,13 @@ export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
                   </Text>
 
                   <Group align="flex-end">
-                    <Button onClick={() => deleteUser(item._id)}>削除</Button>
+                    <Button
+                      onClick={() => deleteUser(item._id)}
+                      color="dark"
+                      size="xs"
+                    >
+                      削除
+                    </Button>
                   </Group>
                 </Dialog>
               </div>

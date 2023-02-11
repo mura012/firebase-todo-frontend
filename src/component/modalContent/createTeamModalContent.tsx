@@ -54,6 +54,8 @@ export const CreateTeamModalContent = () => {
           className="absolute right-8 bottom-3"
           disabled={name && name.length <= 20 ? false : true}
           type="submit"
+          color="dark"
+          size="xs"
         >
           追加
         </Button>

@@ -27,9 +27,13 @@ export const DeleteTeam = () => {
         centered
         title="本当に削除しても良いですか？"
       >
-        <Button onClick={deleteTeam}>削除</Button>
+        <Button onClick={deleteTeam} color="dark" size="xs">
+          削除
+        </Button>
       </Modal>
-      <Button onClick={() => setOpened(true)}>Open Modal</Button>
+      <Button onClick={() => setOpened(true)} color="dark" size="xs">
+        {`「${router.query.name}」を削除`}
+      </Button>
     </>
   );
 };

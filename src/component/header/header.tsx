@@ -33,7 +33,7 @@ export const Header = () => {
         ) : null}
       </Modal>
       {user ? (
-        <Button onClick={() => setOpened(true)}>
+        <Button onClick={() => setOpened(true)} color="dark" size="xs">
           {router.pathname === "/" ? "新しいチームを作成" : "タスクを追加"}
         </Button>
       ) : null}

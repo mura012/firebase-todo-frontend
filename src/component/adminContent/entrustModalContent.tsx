@@ -53,13 +53,24 @@ export const EntrustModalContent = ({ id, data, task }: Props) => {
           >
             {data?.teamUser?.map((item) => {
               return (
-                <Radio value={item.name} label={item.name} key={item._id} />
+                <Radio
+                  value={item.name}
+                  label={item.name}
+                  key={item._id}
+                  color="dark"
+                />
               );
             })}
-            <Radio value="" label="割り振らない" />
+            <Radio value="" label="割り振らない" color="dark" />
           </Radio.Group>
         </label>
-        <Button onClick={() => entrustUser(id, workUser)}>割り振る</Button>
+        <Button
+          onClick={() => entrustUser(id, workUser)}
+          color="dark"
+          size="xs"
+        >
+          割り振る
+        </Button>
       </form>
     </div>
   );

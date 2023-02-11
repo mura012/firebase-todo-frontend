@@ -66,6 +66,8 @@ export const AddUserModal = () => {
       <Button
         className="absolute right-3 bottom-3"
         onClick={addUser}
+        color="dark"
+        size="xs"
         disabled={
           newUser.name && newUser.name.length <= 10 && newUser.email
             ? false
