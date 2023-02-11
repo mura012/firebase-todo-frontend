@@ -1,8 +1,8 @@
 import { SegmentedControl } from "@mantine/core";
 import { useState } from "react";
-import { AddUser } from "./addUser";
-import { DeleteTeam } from "./deleteTeam";
-import { Entrust } from "./entrust";
+import { AddUser } from "./navContent/addUser";
+import { DeleteTeam } from "./navContent/deleteTeam";
+import { Entrust } from "./navContent/entrust";
 
 export const AdminContent = ({
   name,

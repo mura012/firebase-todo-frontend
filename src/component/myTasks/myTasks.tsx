@@ -30,7 +30,7 @@ export const MyTasks = () => {
           <Link
             key={task._id}
             href={`/task/${task.name}`}
-            className="mx-5 before:content-['▶'] my-1 hover:bg-gray-200 p-1"
+            className="mx-5 before:content-['▶'] my-1 hover:bg-gray-200 p-1 border-solid border-0 border-b"
           >
             {task.name}
           </Link>
@@ -65,7 +65,7 @@ export const MyTasks = () => {
             <Link
               key={team._id}
               href={`/task/${item.name}`}
-              className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5 p-1"
+              className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5 p-1 border-solid border-0 border-b"
             >
               {item.name}
             </Link>

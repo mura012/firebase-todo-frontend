@@ -1,4 +1,5 @@
 import { useGetRecordByName } from "@/hooks/useGetRecordByName";
+import { useIsAdminUser } from "@/hooks/useIsAdminUser";
 import { auth } from "@/lib/firebase";
 import { Importance, Limit, Tasks } from "@/types/todo";
 import { Modal } from "@mantine/core";
@@ -19,6 +20,8 @@ export const TodoList = ({
   const router = useRouter();
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const { data } = useGetRecordByName(`${router.query.name}`);
+  const [user] = useAuthState(auth);
+  const { isAdmin } = useIsAdminUser(router.query.name, user?.email);
   const updateTodo = async (e: any, todo: Tasks) => {
     e.preventDefault();
     const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
@@ -95,7 +98,7 @@ export const TodoList = ({
                     alt="済"
                     className="absolute"
                   />
-                  <p className="m-0 mb-2 ml-6 line-through w-36 relative  mt-2">
+                  <p className="m-0 mb-2 ml-6 max-w-[130px] line-through relative  mt-2">
                     {todo.task}
                   </p>
                 </div>
@@ -108,49 +111,53 @@ export const TodoList = ({
                   <p className="m-0 text-sm">{todo.workingUserName}</p>
                 </div>
               ) : null}
-              <div className="flex">
-                <button
-                  className="border-0 bg-white cursor-pointer"
-                  onClick={(e) => updateTodo(e, todo)}
-                >
-                  <Image
-                    src="/images/check.png"
-                    width={15}
-                    height={15}
-                    alt="完了"
-                  />
-                </button>
-                <Modal
-                  opened={todoOpened}
-                  onClose={() => setTodoOpened(false)}
-                  title={`「${todo.task}」を編集`}
-                  centered
-                >
-                  <UpdateModalContent todo={todo} />
-                </Modal>
-                <button
-                  className="border-0 bg-white cursor-pointer"
-                  onClick={() => setTodoOpened(true)}
-                >
-                  <Image
-                    src="/images/change.png"
-                    width={20}
-                    height={20}
-                    alt="編集"
-                  />
-                </button>
-                <button
-                  className="border-0 bg-white cursor-pointer"
-                  onClick={(e) => deleteTodo(e, todo)}
-                >
-                  <Image
-                    src="/images/trash.png"
-                    width={15}
-                    height={15}
-                    alt="ゴミ箱"
-                  />
-                </button>
-              </div>
+              {isAdmin ? (
+                <div className="flex">
+                  <button
+                    className="border-0 bg-white cursor-pointer"
+                    onClick={(e) => updateTodo(e, todo)}
+                  >
+                    <Image
+                      src="/images/check.png"
+                      width={15}
+                      height={15}
+                      alt="完了"
+                    />
+                  </button>
+                  <Modal
+                    opened={todoOpened}
+                    onClose={() => setTodoOpened(false)}
+                    title={`「${todo.task}」を編集`}
+                    centered
+                  >
+                    <UpdateModalContent todo={todo} />
+                  </Modal>
+                  <button
+                    className="border-0 bg-white cursor-pointer"
+                    onClick={() => setTodoOpened(true)}
+                  >
+                    <Image
+                      src="/images/change.png"
+                      width={20}
+                      height={20}
+                      alt="編集"
+                    />
+                  </button>
+                  <button
+                    className="border-0 bg-white cursor-pointer"
+                    onClick={(e) => deleteTodo(e, todo)}
+                  >
+                    <Image
+                      src="/images/trash.png"
+                      width={15}
+                      height={15}
+                      alt="ゴミ箱"
+                    />
+                  </button>
+                </div>
+              ) : (
+                <div className="ml-4" />
+              )}
             </li>
           );
         })}
@@ -159,7 +166,6 @@ export const TodoList = ({
 };
 
 export const TodoLists = ({ limit }: { limit: Limit }) => {
-  const [user] = useAuthState(auth);
   const router = useRouter();
   const { data, isLoading } = useGetRecordByName(`${router.query.name}`);
 

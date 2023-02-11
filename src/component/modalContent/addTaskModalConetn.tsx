@@ -8,7 +8,7 @@ export const AddTaskModalContent = () => {
   const [task, setTask] = useState<string>("");
   const [limit, setLimit] = useState("今日中");
   const [importance, setImportance] = useState("高");
-  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`${router.query.name}`);
   const addTask: ComponentProps<"button">["onClick"] = async (e) => {
     const newTasks = [data?.tasks, { task, limit, importance, isDone: false }];
 
