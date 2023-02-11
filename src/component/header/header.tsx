@@ -16,14 +16,14 @@ export const Header = () => {
   const { data } = useGetRecordByName(`${router.query.name}`);
 
   return (
-    <header className="w-full h-20 text-black flex items-center justify-between bg-yellow-200">
+    <header className="w-full h-20 text-black flex items-center justify-between bg-gray-200">
       <Link href="/">
         <h1 className="font-bold ml-3 text-lg xs:text-3xl">Todoリスト</h1>
       </Link>
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title={router.pathname === "/" ? "新しいチームを作成" : "タスクを追加"}
+        title={router.pathname === "/" ? "新しいリストを作成" : "タスクを追加"}
         centered
       >
         {router.pathname === "/" ? (
@@ -32,11 +32,11 @@ export const Header = () => {
           <AddTaskModalContent />
         ) : null}
       </Modal>
-      {user ? (
+      {user && (
         <Button onClick={() => setOpened(true)} color="dark" size="xs">
-          {router.pathname === "/" ? "新しいチームを作成" : "タスクを追加"}
+          {router.pathname === "/" ? "新しいリストを作成" : "タスクを追加"}
         </Button>
-      ) : null}
+      )}
       <Auth />
     </header>
   );

@@ -88,7 +88,10 @@ export const TodoList = ({
         )
         .map((todo) => {
           return (
-            <li key={todo._id} className="flex justify-between items-center">
+            <li
+              key={todo._id}
+              className="flex justify-between items-center border-solid border-0 border-b mt-2 mx-2"
+            >
               {todo.isDone ? (
                 <div>
                   <Image
@@ -98,12 +101,12 @@ export const TodoList = ({
                     alt="済"
                     className="absolute"
                   />
-                  <p className="m-0 mb-2 ml-6 max-w-[130px] line-through relative  mt-2">
+                  <p className="m-0 ml-6 max-w-[130px] line-through relative">
                     {todo.task}
                   </p>
                 </div>
               ) : (
-                <p className="m-0 mb-2 ml-6 max-w-[130px] mt-2">{todo.task}</p>
+                <p className="m-0 ml-6 max-w-[130px]">{todo.task}</p>
               )}
               {todo.workingUserName ? (
                 <div className="flex flex-col justify-center items-center">
@@ -191,19 +194,19 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
         )}
         <TodoList limit={limit} importance={"高"} />
         {checkImportance("高", limit) ? (
-          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
+          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400 mt-2">
             ↑優先度「高」
           </div>
         ) : null}
         <TodoList limit={limit} importance={"中"} />
         {checkImportance("中", limit) ? (
-          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
+          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400 mt-2">
             ↑優先度「中」
           </div>
         ) : null}
         <TodoList limit={limit} importance={"低"} />
         {checkImportance("低", limit) ? (
-          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400">
+          <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400 mt-2">
             ↑優先度「低」
           </div>
         ) : null}

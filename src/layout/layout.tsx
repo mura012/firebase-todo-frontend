@@ -14,7 +14,7 @@ export const Layout = ({ children, title }: Props) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <div className="w-full items-center flex flex-col min-h-screen bg-green-300">
+      <div className="w-full items-center flex flex-col min-h-screen bg-slate-400">
         <Header />
         <div className="flex-1 flex">{children}</div>
         <Footer />

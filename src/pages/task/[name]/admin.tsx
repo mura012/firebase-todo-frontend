@@ -1,7 +1,6 @@
 import { AdminContent } from "@/component/adminContent/adminContent";
 import { NoAdmin } from "@/component/adminContent/noAdmin";
 import { Loading } from "@/component/loading";
-import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { useIsAdminUser } from "@/hooks/useIsAdminUser";
 import { Layout } from "@/layout/layout";
 import { auth } from "@/lib/firebase";
@@ -12,7 +11,6 @@ const Admin = () => {
   const [user, loading] = useAuthState(auth);
 
   const router = useRouter();
-  const { data } = useGetRecordByName(`${router.query.name}`);
   const { isAdmin } = useIsAdminUser(router.query.name, user?.email);
 
   if (loading) {

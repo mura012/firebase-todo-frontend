@@ -12,14 +12,14 @@ export const AdminContent = ({
   const [selected, setSelected] = useState("add");
 
   return (
-    <div className="flex flex-col max-w-md">
+    <div className="flex flex-col max-w-md bg-gray-200 px-2">
       <SegmentedControl
         value={selected}
         onChange={setSelected}
         data={[
-          { label: "ユーザーを追加", value: "add" },
+          { label: "メンバーを追加", value: "add" },
           { label: "タスクを任せる", value: "entrust" },
-          { label: "チームを削除", value: "delete" },
+          { label: "リストを削除", value: "delete" },
         ]}
       />
       {selected === "add" && <AddUser name={name} />}

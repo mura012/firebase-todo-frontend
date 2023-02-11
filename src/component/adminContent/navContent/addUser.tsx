@@ -33,17 +33,17 @@ export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
   };
   return (
     <div className="flex flex-col">
-      <h2>{`現在のユーザー${teamUser?.length}人`}</h2>
+      <h2>{`メンバー${teamUser?.length}人`}</h2>
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title="ユーザーを追加"
+        title="メンバー"
         centered
       >
         <AddUserModal />
       </Modal>
       <Button onClick={() => setModalOpened(true)} color="dark" size="xs">
-        ユーザーを追加
+        メンバーを追加
       </Button>
       <ul>
         {teamUser?.map((item) => {

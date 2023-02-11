@@ -40,7 +40,7 @@ export const AddUserModal = () => {
   return (
     <form className="pb-10" onSubmit={(e) => e.preventDefault()}>
       <label>
-        <Input.Wrapper label="ユーザー名">
+        <Input.Wrapper label="メンバーの名前">
           <Input
             value={newUser.name}
             onChange={(e) =>

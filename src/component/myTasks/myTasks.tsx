@@ -22,18 +22,29 @@ export const MyTasks = () => {
   };
 
   return (
-    <div className="bg-gray-100 flex flex-col w-1/4">
+    <div className="bg-gray-100 flex flex-col w-2/4">
       <h2 className="ml-5">あなたが作成したチーム</h2>
       {isLoading ? <Loading /> : null}
       {data?.map((task) => {
         return (
-          <Link
+          <div
             key={task._id}
-            href={`/task/${task.name}`}
-            className="mx-5 before:content-['▶'] my-1 hover:bg-gray-200 p-1 border-solid border-0 border-b"
+            className="flex justify-around items-center mx-5 before:content-['▶']  p-1 border-solid border-0 border-b"
           >
-            {task.name}
-          </Link>
+            <span className="flex-[2]">{task.name}</span>
+            <Link
+              href={`/task/${task.name}`}
+              className="flex-[2] hover:bg-gray-200 py-1"
+            >
+              リストへ移動
+            </Link>
+            <Link
+              href={`/task/${task.name}/admin`}
+              className="flex-[2] hover:bg-gray-200 py-1"
+            >
+              管理画面へ移動
+            </Link>
+          </div>
         );
       })}
       <form onSubmit={handleSearch} className="relative mb-12">
@@ -61,15 +72,17 @@ export const MyTasks = () => {
       </form>
       {adminData.map((item: Todo) => {
         return item.teamUser?.map((team: TeamUser) => {
-          return team.email === user?.email ? (
-            <Link
-              key={team._id}
-              href={`/task/${item.name}`}
-              className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5 p-1 border-solid border-0 border-b"
-            >
-              {item.name}
-            </Link>
-          ) : null;
+          return (
+            team.email === user?.email && (
+              <Link
+                key={team._id}
+                href={`/task/${item.name}`}
+                className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5 p-1 border-solid border-0 border-b"
+              >
+                {item.name}
+              </Link>
+            )
+          );
         });
       })}
     </div>

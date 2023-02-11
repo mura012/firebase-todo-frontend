@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <Layout title="todo">
       <main className="flex w-screen flex-wrap justify-center">
-        {user ? <MyTasks /> : null}
+        {user && <MyTasks />}
       </main>
     </Layout>
   );
