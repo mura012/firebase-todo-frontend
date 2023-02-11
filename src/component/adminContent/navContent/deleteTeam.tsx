@@ -6,7 +6,7 @@ import { useState } from "react";
 export const DeleteTeam = () => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
-  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`${router.query.name}`);
   const deleteTeam = () => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/all`, {
       method: "delete",

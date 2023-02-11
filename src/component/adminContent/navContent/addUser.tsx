@@ -48,7 +48,10 @@ export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
       <ul>
         {teamUser?.map((item) => {
           return (
-            <li key={item._id} className="flex justify-between">
+            <li
+              key={item._id}
+              className="flex justify-between border-solid border-0 border-b pb-1"
+            >
               <div>
                 <p className="m-0 text-lg">{item.name}</p>
                 <p className="m-0 text-sm text-gray-700">{item.email}</p>
