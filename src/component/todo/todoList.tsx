@@ -18,7 +18,7 @@ export const TodoList = ({
 }) => {
   const router = useRouter();
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
-  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`${router.query.name}`);
   const updateTodo = async (e: any, todo: Tasks) => {
     e.preventDefault();
     const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
@@ -30,6 +30,7 @@ export const TodoList = ({
         limit: todo.limit,
         importance: todo.importance,
         isDone: todo.isDone ? false : true,
+        workingUserName: todo.workingUserName,
         _id: todo._id,
       },
     ].flat();
@@ -101,6 +102,12 @@ export const TodoList = ({
               ) : (
                 <p className="m-0 mb-2 ml-6 max-w-[130px] mt-2">{todo.task}</p>
               )}
+              {todo.workingUserName ? (
+                <div className="flex flex-col justify-center items-center">
+                  <p className="m-0 text-xs">作業中</p>
+                  <p className="m-0 text-sm">{todo.workingUserName}</p>
+                </div>
+              ) : null}
               <div className="flex">
                 <button
                   className="border-0 bg-white cursor-pointer"
@@ -154,7 +161,7 @@ export const TodoList = ({
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { data, isLoading } = useGetRecordByName(`myTask/${router.query.name}`);
+  const { data, isLoading } = useGetRecordByName(`${router.query.name}`);
 
   const checkTaskLength = data?.tasks.filter(
     (todo) => todo.limit === limit

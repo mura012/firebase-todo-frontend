@@ -18,13 +18,20 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
   const [importance, setImportance] = useState<string>(todo.importance);
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`${router.query.name}`);
   const updateTask = async ({ e, id }: Props) => {
     e.preventDefault();
     const prevData = await data?.tasks?.filter((task) => task._id !== id);
     const newData = [
       prevData,
-      { task, limit, importance, isDone: todo.isDone, _id: todo._id },
+      {
+        task,
+        limit,
+        importance,
+        isDone: todo.isDone,
+        workingUserName: todo.workingUserName,
+        _id: todo._id,
+      },
     ].flat();
     try {
       await fetch(

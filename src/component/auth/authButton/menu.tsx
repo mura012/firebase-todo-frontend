@@ -17,13 +17,6 @@ export const Menu = ({}: {}) => {
 
   return (
     <>
-      <Button
-        onClick={user ? handleSignOut : handleSignIn}
-        className=" text-black hover:bg-blue-300 bg-white w-full"
-      >
-        <p className="m-0">{user ? "サインアウト" : "サインイン"}</p>
-      </Button>
-
       {user && router.pathname !== "/" && (
         <Button className=" text-black hover:bg-blue-300 bg-white w-full">
           <Link
@@ -42,6 +35,12 @@ export const Menu = ({}: {}) => {
           </Link>
         </Button>
       )}
+      <Button
+        onClick={user ? handleSignOut : handleSignIn}
+        className=" text-black hover:bg-blue-300 bg-white w-full"
+      >
+        <p className="m-0">{user ? "サインアウト" : "サインイン"}</p>
+      </Button>
     </>
   );
 };

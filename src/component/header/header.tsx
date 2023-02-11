@@ -1,3 +1,4 @@
+import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { auth } from "@/lib/firebase";
 import { Button, Modal } from "@mantine/core";
 import Link from "next/link";
@@ -12,6 +13,7 @@ export const Header = () => {
   const [opened, setOpened] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const { data } = useGetRecordByName(`${router.query.name}`);
 
   return (
     <header className="w-full h-20 text-black flex items-center justify-between bg-yellow-200">
@@ -26,9 +28,9 @@ export const Header = () => {
       >
         {router.pathname === "/" ? (
           <CreateTeamModalContent />
-        ) : (
+        ) : data?.adminUserEmail === user?.email ? (
           <AddTaskModalContent />
-        )}
+        ) : null}
       </Modal>
       {user ? (
         <Button onClick={() => setOpened(true)}>

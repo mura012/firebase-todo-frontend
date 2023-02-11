@@ -1,16 +1,13 @@
 import { useGetRecordByName } from "@/hooks/useGetRecordByName";
-import { auth } from "@/lib/firebase";
 import { Input, Button, Radio } from "@mantine/core";
 import { useRouter } from "next/router";
 import { ComponentProps, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 export const AddTaskModalContent = () => {
   const router = useRouter();
   const [task, setTask] = useState<string>("");
   const [limit, setLimit] = useState("今日中");
   const [importance, setImportance] = useState("高");
-  const [user] = useAuthState(auth);
   const { data } = useGetRecordByName(`myTask/${router.query.name}`);
   const addTask: ComponentProps<"button">["onClick"] = async (e) => {
     const newTasks = [data?.tasks, { task, limit, importance, isDone: false }];
@@ -18,7 +15,7 @@ export const AddTaskModalContent = () => {
     e.preventDefault();
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/add/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意

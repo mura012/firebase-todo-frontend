@@ -11,7 +11,7 @@ export const MyTasks = () => {
   const [user] = useAuthState(auth);
   const [email, setEmail] = useState<string>("");
   const [adminData, setAdminData] = useState([]);
-  const { data, isLoading } = useGetRecordByEmail(`myTasks/${user?.email}`);
+  const { data, isLoading } = useGetRecordByEmail(`${user?.email}`);
   const handleSearch: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
     const data = await fetch(
@@ -22,52 +22,51 @@ export const MyTasks = () => {
   };
 
   return (
-    <div className="bg-gray-100 flex flex-col w-2/4">
-      <>
-        <h2>あなたが作成したチーム</h2>
-        {isLoading ? <Loading /> : null}
-        {data?.map((task) => {
-          return (
+    <div className="bg-gray-100 flex flex-col w-1/4">
+      <h2 className="ml-5">あなたが作成したチーム</h2>
+      {isLoading ? <Loading /> : null}
+      {data?.map((task) => {
+        return (
+          <Link
+            key={task._id}
+            href={`/task/${task.name}`}
+            className="mx-5 before:content-['▶'] my-1 hover:bg-gray-200"
+          >
+            {task.name}
+          </Link>
+        );
+      })}
+      <form onSubmit={handleSearch} className="relative mb-12">
+        <label>
+          <Input.Wrapper
+            label="メールアドレス"
+            description="リーダーのメールアドレスを検索"
+            className="mx-5"
+          >
+            <Input
+              placeholder="exsample@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Input.Wrapper>
+        </label>
+        <Button type="submit" className="absolute right-5 mt-1">
+          検索
+        </Button>
+      </form>
+      {adminData.map((item: Todo) => {
+        return item.teamUser?.map((team: TeamUser) => {
+          return team.email === user?.email ? (
             <Link
-              key={task._id}
-              href={`/task/${task.name}`}
-              className="before:content-['▶'] my-1 hover:bg-gray-200"
+              key={team._id}
+              href={`/task/${item.name}`}
+              className="before:content-['▶'] my-1 hover:bg-gray-200 mx-5"
             >
-              {task.name}
+              {item.name}
             </Link>
-          );
-        })}
-        <form onSubmit={handleSearch} className="relative mb-12">
-          <label>
-            <Input.Wrapper
-              label="メールアドレス"
-              description="リーダーのメールアドレスを検索"
-            >
-              <Input
-                placeholder="exsample@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Input.Wrapper>
-          </label>
-          <Button type="submit" className="absolute right-0 mt-1">
-            検索
-          </Button>
-        </form>
-        {adminData.map((item: Todo) => {
-          return item.teamUser?.map((team: TeamUser) => {
-            return team.email === user?.email ? (
-              <Link
-                key={team._id}
-                href={`/task/${item.name}`}
-                className="before:content-['▶'] my-1 hover:bg-gray-200"
-              >
-                {item.name}
-              </Link>
-            ) : null;
-          });
-        })}
-      </>
+          ) : null;
+        });
+      })}
     </div>
   );
 };

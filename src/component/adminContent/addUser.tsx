@@ -6,14 +6,14 @@ import { AddUserModal } from "./addUserModal";
 export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
-  const { data } = useGetRecordByName(`myTask/${name}`);
+  const { data } = useGetRecordByName(`${name}`);
   const teamUser = data?.teamUser;
   const deleteUser = async (id: string) => {
     const newUsers = data?.teamUser?.filter((user) => user._id !== id);
 
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/add/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
@@ -46,29 +46,33 @@ export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
       <ul>
         {teamUser?.map((item) => {
           return (
-            <li key={item._id} className="flex">
+            <li key={item._id} className="flex justify-between">
               <div>
                 <p className="m-0 text-lg">{item.name}</p>
                 <p className="m-0 text-sm text-gray-700">{item.email}</p>
               </div>
-              <Group position="center">
-                <Button onClick={() => setDialogOpened((o) => !o)}>削除</Button>
-              </Group>
-              <Dialog
-                opened={dialogOpened}
-                withCloseButton
-                onClose={() => setDialogOpened(false)}
-                size="lg"
-                radius="md"
-              >
-                <Text size="sm" style={{ marginBottom: 10 }} weight={500}>
-                  本当に削除しても良いですか？
-                </Text>
-
-                <Group align="flex-end">
-                  <Button onClick={() => deleteUser(item._id)}>削除</Button>
+              <div className="flex justify-center">
+                <Group position="center">
+                  <Button onClick={() => setDialogOpened((o) => !o)}>
+                    削除
+                  </Button>
                 </Group>
-              </Dialog>
+                <Dialog
+                  opened={dialogOpened}
+                  withCloseButton
+                  onClose={() => setDialogOpened(false)}
+                  size="lg"
+                  radius="md"
+                >
+                  <Text size="sm" style={{ marginBottom: 10 }} weight={500}>
+                    本当に削除しても良いですか？
+                  </Text>
+
+                  <Group align="flex-end">
+                    <Button onClick={() => deleteUser(item._id)}>削除</Button>
+                  </Group>
+                </Dialog>
+              </div>
             </li>
           );
         })}

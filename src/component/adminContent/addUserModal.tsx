@@ -9,7 +9,7 @@ type User = Pick<TeamUser, "name" | "email">;
 export const AddUserModal = () => {
   const [newUser, setNewUser] = useState<User>({ name: "", email: "" });
   const router = useRouter();
-  const { data } = useGetRecordByName(`myTask/${router.query.name}`);
+  const { data } = useGetRecordByName(`${router.query.name}`);
   const addUser = async () => {
     const addUser = [
       data?.teamUser,
@@ -18,7 +18,7 @@ export const AddUserModal = () => {
 
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/add/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
@@ -38,7 +38,7 @@ export const AddUserModal = () => {
     setNewUser({ name: "", email: "" });
   };
   return (
-    <form className="pb-10">
+    <form className="pb-10" onSubmit={(e) => e.preventDefault()}>
       <label>
         <Input.Wrapper label="ユーザー名">
           <Input
@@ -48,6 +48,7 @@ export const AddUserModal = () => {
             }
           />
         </Input.Wrapper>
+        <p className="m-0 text-right">{newUser.name.length}/20</p>
       </label>
       <label>
         <Input.Wrapper label="メールアドレス">
@@ -62,7 +63,15 @@ export const AddUserModal = () => {
           />
         </Input.Wrapper>
       </label>
-      <Button className="absolute right-3 bottom-3" onClick={addUser}>
+      <Button
+        className="absolute right-3 bottom-3"
+        onClick={addUser}
+        disabled={
+          newUser.name && newUser.name.length <= 10 && newUser.email
+            ? false
+            : true
+        }
+      >
         追加
       </Button>
     </form>

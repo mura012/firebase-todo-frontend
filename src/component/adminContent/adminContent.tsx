@@ -1,31 +1,30 @@
+import { SegmentedControl } from "@mantine/core";
 import { useState } from "react";
 import { AddUser } from "./addUser";
-import { AdminNavMenu } from "./adminNavMenu";
 import { DeleteTeam } from "./deleteTeam";
-
-export type Nav = {
-  id: number;
-  label: string;
-  isSelected: boolean;
-};
-
-const nav: Nav[] = [
-  { id: 1, label: "ユーザーを追加", isSelected: true },
-  { id: 2, label: "チームを削除", isSelected: false },
-];
+import { Entrust } from "./entrust";
 
 export const AdminContent = ({
   name,
 }: {
   name: string | string[] | undefined;
 }) => {
-  const [navBar, setNavBar] = useState(nav);
+  const [selected, setSelected] = useState("add");
 
   return (
-    <div className="flex">
-      <AdminNavMenu navBar={navBar} setNavBar={setNavBar} />
-      {navBar[0].isSelected && <AddUser name={name} />}
-      {navBar[1].isSelected && <DeleteTeam />}
+    <div className="flex flex-col max-w-md">
+      <SegmentedControl
+        value={selected}
+        onChange={setSelected}
+        data={[
+          { label: "ユーザーを追加", value: "add" },
+          { label: "タスクを任せる", value: "entrust" },
+          { label: "チームを削除", value: "delete" },
+        ]}
+      />
+      {selected === "add" && <AddUser name={name} />}
+      {selected === "entrust" && <Entrust />}
+      {selected === "delete" && <DeleteTeam />}
     </div>
   );
 };

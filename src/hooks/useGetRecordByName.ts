@@ -8,7 +8,7 @@ export const useGetRecordByName = (url: string) => {
   };
 
   const { data, error } = useSWR<DatabaseType, Error>(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${url}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/myTask/${url}`,
     fetcher
   );
   return { data, error, isLoading: !data && !error };
