@@ -108,12 +108,12 @@ export const TodoList = ({
               ) : (
                 <p className="m-0 ml-6 max-w-[130px]">{todo.task}</p>
               )}
-              {todo.workingUserName ? (
+              {todo.workingUserName && (
                 <div className="flex flex-col justify-center items-center">
                   <p className="m-0 text-xs">作業中</p>
                   <p className="m-0 text-sm">{todo.workingUserName}</p>
                 </div>
-              ) : null}
+              )}
               {isAdmin ? (
                 <div className="flex">
                   <button

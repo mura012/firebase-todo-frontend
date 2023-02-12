@@ -21,6 +21,7 @@ export const DeleteTeam = () => {
   };
   return (
     <>
+      <h2>{`「${router.query.name}」を削除`}</h2>
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}

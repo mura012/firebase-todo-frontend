@@ -35,7 +35,7 @@ export const Auth = () => {
           />
         )}
         {profileOpened && (
-          <div className="absolute right-0 z-50 bg-white border-solid border-black rounded-md">
+          <div className="absolute right-0 z-50 bg-white border-solid border-black rounded-md min-w-[150px]">
             {auth.currentUser && auth.currentUser.photoURL ? (
               <div className="flex items-center mt-1 ml-3">
                 <Image
