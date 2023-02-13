@@ -1,32 +1,32 @@
 import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { useIsAdminUser } from "@/hooks/useIsAdminUser";
 import { auth } from "@/lib/firebase";
-import { Importance, Limit, Tasks } from "@/types/todo";
+import { DatabaseType, Importance, Limit, Tasks } from "@/types/todo";
 import { Modal } from "@mantine/core";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Loading } from "../loading";
 import { UpdateModalContent } from "../modalContent/updateModalContent";
 
-export const TodoList = ({
-  limit,
-  importance,
-}: {
+type Props = {
   limit: Limit;
   importance: Importance;
-}) => {
+  state: DatabaseType | undefined;
+  setState: Dispatch<SetStateAction<DatabaseType | undefined>>;
+};
+
+export const TodoList = ({ limit, importance, state, setState }: Props) => {
   const router = useRouter();
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const { data } = useGetRecordByName(`${router.query.name}`);
-  const [state, setState] = useState(data);
   const [user] = useAuthState(auth);
   const { isAdmin } = useIsAdminUser(router.query.name, user?.email);
 
   useEffect(() => {
     setState(data);
-  }, [data]);
+  }, [data, setState]);
 
   const updateTodo = async (e: any, todo: Tasks) => {
     e.preventDefault();
@@ -186,11 +186,12 @@ export const TodoList = ({
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const router = useRouter();
   const { data, isLoading } = useGetRecordByName(`${router.query.name}`);
-  const checkTaskLength = data?.tasks.filter(
+  const [state, setState] = useState(data);
+  const checkTaskLength = state?.tasks.filter(
     (todo) => todo.limit === limit
   ).length;
   const checkImportance = (importance: string, limit: string) => {
-    return data?.tasks.some(
+    return state?.tasks.some(
       (task) => task.importance === importance && task.limit === limit
     );
   };
@@ -206,19 +207,34 @@ export const TodoLists = ({ limit }: { limit: Limit }) => {
             <Loading />
           </li>
         )}
-        <TodoList limit={limit} importance={"高"} />
+        <TodoList
+          limit={limit}
+          importance={"高"}
+          state={state}
+          setState={setState}
+        />
         {checkImportance("高", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400 mt-2">
             ↑優先度「高」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"中"} />
+        <TodoList
+          limit={limit}
+          importance={"中"}
+          state={state}
+          setState={setState}
+        />
         {checkImportance("中", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400 mt-2">
             ↑優先度「中」
           </div>
         ) : null}
-        <TodoList limit={limit} importance={"低"} />
+        <TodoList
+          limit={limit}
+          importance={"低"}
+          state={state}
+          setState={setState}
+        />
         {checkImportance("低", limit) ? (
           <div className="border-solid border-0 border-b-2 mx-2 text-sm text-gray-400 border-gray-400 mt-2">
             ↑優先度「低」
