@@ -1,24 +1,30 @@
-import { useGetRecordByName } from "@/hooks/useGetRecordByName";
-import { TeamUser } from "@/types/todo";
+import { DatabaseType, TeamUser } from "@/types/todo";
 import { Button, Input } from "@mantine/core";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 type User = Pick<TeamUser, "name" | "email">;
 
-export const AddUserModal = () => {
+type Props = {
+  state: DatabaseType | undefined;
+  setState: Dispatch<SetStateAction<DatabaseType | undefined>>;
+};
+
+export const AddUserModal = ({ state, setState }: Props) => {
   const [newUser, setNewUser] = useState<User>({ name: "", email: "" });
-  const router = useRouter();
-  const { data } = useGetRecordByName(`${router.query.name}`);
   const addUser = async () => {
     const addUser = [
-      data?.teamUser,
+      state?.teamUser,
       { name: newUser.name, email: newUser.email },
     ].flat();
-
+    setState((prev: any) => {
+      return {
+        ...prev,
+        teamUser: addUser,
+      };
+    });
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${state?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
@@ -26,12 +32,11 @@ export const AddUserModal = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
+            ...state,
             teamUser: addUser,
           }),
         }
       );
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }

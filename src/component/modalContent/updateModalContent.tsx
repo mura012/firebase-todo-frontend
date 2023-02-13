@@ -19,9 +19,10 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const { data } = useGetRecordByName(`${router.query.name}`);
+  const [state, setState] = useState(data);
   const updateTask = async ({ e, id }: Props) => {
     e.preventDefault();
-    const prevData = await data?.tasks?.filter((task) => task._id !== id);
+    const prevData = await state?.tasks?.filter((task) => task._id !== id);
     const newData = [
       prevData,
       {
@@ -33,9 +34,15 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
         _id: todo._id,
       },
     ].flat();
+    setState((prev: any) => {
+      return {
+        ...prev,
+        tasks: newData,
+      };
+    });
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${state?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
@@ -43,12 +50,11 @@ export const UpdateModalContent = ({ todo }: { todo: Tasks }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
+            ...state,
             tasks: newData,
           }),
         }
       );
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }

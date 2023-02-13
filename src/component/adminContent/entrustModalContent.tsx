@@ -1,22 +1,23 @@
 import { auth } from "@/lib/firebase";
 import { DatabaseType } from "@/types/todo";
 import { Button, Select } from "@mantine/core";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 type Props = {
   id: string;
-  data: DatabaseType;
+  state: DatabaseType | undefined;
+  setState: Dispatch<SetStateAction<DatabaseType | undefined>>;
 };
 
-export const EntrustModalContent = ({ id, data }: Props) => {
+export const EntrustModalContent = ({ id, state, setState }: Props) => {
   const [workUser, setWorkUser] = useState<string | null>(null);
   const [user] = useAuthState(auth);
   const entrustUser = async (
     id: string,
     workUser: string | null | undefined
   ) => {
-    const newTasks = data?.tasks?.map((user) => {
+    const newTasks = state?.tasks?.map((user) => {
       if (user._id === id) {
         return {
           ...user,
@@ -25,10 +26,16 @@ export const EntrustModalContent = ({ id, data }: Props) => {
       }
       return user;
     });
+    setState((prev: any) => {
+      return {
+        ...prev,
+        tasks: newTasks,
+      };
+    });
 
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${state?._id}`,
         {
           method: "PATCH",
           // ↓忘れていたので注意
@@ -36,22 +43,21 @@ export const EntrustModalContent = ({ id, data }: Props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
+            ...state,
             tasks: newTasks,
           }),
         }
       );
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }
   };
   return (
     <div className="relative mb-8">
-      {data.teamUser && (
+      {state?.teamUser && (
         <>
           <Select
-            data={data.teamUser.map((item) => {
+            data={state.teamUser.map((item) => {
               return { value: item.name, label: item.name };
             })}
             className="w-28"

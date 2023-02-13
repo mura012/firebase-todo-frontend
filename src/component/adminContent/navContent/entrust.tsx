@@ -1,15 +1,18 @@
 import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { EntrustModalContent } from "../entrustModalContent";
 
 export const Entrust = () => {
   const router = useRouter();
+
   const { data } = useGetRecordByName(`${router.query.name}`);
+  const [state, setState] = useState(data);
 
   return (
     <div>
       <h2>タスクを任せる</h2>
-      {data?.tasks.map((task) => {
+      {state?.tasks.map((task) => {
         return (
           <div
             key={task._id}
@@ -23,7 +26,11 @@ export const Entrust = () => {
               </div>
             )}
 
-            <EntrustModalContent id={task._id} data={data} />
+            <EntrustModalContent
+              id={task._id}
+              state={state}
+              setState={setState}
+            />
           </div>
         );
       })}
