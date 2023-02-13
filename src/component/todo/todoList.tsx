@@ -5,7 +5,7 @@ import { Importance, Limit, Tasks } from "@/types/todo";
 import { Modal } from "@mantine/core";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Loading } from "../loading";
 import { UpdateModalContent } from "../modalContent/updateModalContent";
@@ -20,11 +20,17 @@ export const TodoList = ({
   const router = useRouter();
   const [todoOpened, setTodoOpened] = useState<boolean>(false);
   const { data } = useGetRecordByName(`${router.query.name}`);
+  const [state, setState] = useState(data);
   const [user] = useAuthState(auth);
   const { isAdmin } = useIsAdminUser(router.query.name, user?.email);
+
+  useEffect(() => {
+    setState(data);
+  }, [data]);
+
   const updateTodo = async (e: any, todo: Tasks) => {
     e.preventDefault();
-    const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
+    const prevData = state?.tasks?.filter((task) => task._id !== todo._id);
 
     const newData = [
       prevData,
@@ -37,44 +43,53 @@ export const TodoList = ({
         _id: todo._id,
       },
     ].flat();
+    setState((prev: any) => {
+      return {
+        ...prev,
+        tasks: newData,
+      };
+    });
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${state?._id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
+            ...state,
             tasks: newData,
           }),
         }
       );
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }
   };
   const deleteTodo = async (e: any, todo: Tasks) => {
     e.preventDefault();
-    const prevData = data?.tasks?.filter((task) => task._id !== todo._id);
-
+    const otherData = state?.tasks?.filter((task) => task._id !== todo._id);
+    setState((prev: any) => {
+      return {
+        ...prev,
+        tasks: otherData,
+      };
+    });
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/update/${state?._id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
-            tasks: prevData,
+            ...state,
+            tasks: otherData,
           }),
         }
       );
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +97,7 @@ export const TodoList = ({
 
   return (
     <>
-      {data?.tasks
+      {state?.tasks
         ?.filter(
           (todo) => todo.importance === importance && todo.limit === limit
         )
@@ -171,7 +186,6 @@ export const TodoList = ({
 export const TodoLists = ({ limit }: { limit: Limit }) => {
   const router = useRouter();
   const { data, isLoading } = useGetRecordByName(`${router.query.name}`);
-
   const checkTaskLength = data?.tasks.filter(
     (todo) => todo.limit === limit
   ).length;
