@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-export const Menu = ({}: {}) => {
+export const Menu = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const handleSignOut = () => {
+    router.push("/");
     auth.signOut();
   };
   const handleSignIn = () => {

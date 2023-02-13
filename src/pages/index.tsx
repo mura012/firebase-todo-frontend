@@ -1,3 +1,4 @@
+import { SignIn } from "@/component/auth/authButton/signIn";
 import { MyTasks } from "@/component/myTasks";
 import { Layout } from "@/layout/layout";
 import { auth } from "@/lib/firebase";
@@ -8,7 +9,14 @@ const Home = () => {
   return (
     <Layout title="todo">
       <main className="flex w-screen flex-wrap justify-center">
-        {user && <MyTasks />}
+        {user ? (
+          <MyTasks />
+        ) : (
+          <div>
+            <h2>Googleでサインインしてください</h2>
+            <SignIn />
+          </div>
+        )}
       </main>
     </Layout>
   );
