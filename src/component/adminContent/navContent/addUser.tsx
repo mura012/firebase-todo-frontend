@@ -1,12 +1,16 @@
 import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { Button, Modal } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddUserModal } from "./addUserModal";
 
 export const AddUser = ({ name }: { name: string | string[] | undefined }) => {
   const [modalOpened, setModalOpened] = useState(false);
   const { data } = useGetRecordByName(`${name}`);
   const [state, setState] = useState(data);
+
+  useEffect(() => {
+    setState(data);
+  }, [data]);
   const deleteUser = async (email: string) => {
     const newUsers = state?.teamUser?.filter((user) => user.email !== email);
     setState((prev: any) => {

@@ -1,6 +1,6 @@
 import { useGetRecordByName } from "@/hooks/useGetRecordByName";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EntrustModalContent } from "../entrustModalContent";
 
 export const Entrust = () => {
@@ -8,6 +8,10 @@ export const Entrust = () => {
 
   const { data } = useGetRecordByName(`${router.query.name}`);
   const [state, setState] = useState(data);
+
+  useEffect(() => {
+    setState(data);
+  }, [data]);
 
   return (
     <div>
