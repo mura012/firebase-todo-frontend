@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { ComponentProps, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-export const CreateTeamModalContent = () => {
+export const CreateListModalContent = () => {
   const [name, setName] = useState<string>("");
   const [user] = useAuthState(auth);
   const router = useRouter();

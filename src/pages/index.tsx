@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const Home = () => {
   const [user] = useAuthState(auth);
   return (
-    <Layout title="todo">
+    <Layout title="ホーム">
       <main className="flex w-screen flex-wrap justify-center">
         {user ? (
           <MyTasks />

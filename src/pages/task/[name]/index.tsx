@@ -1,7 +1,7 @@
 import { TodoLists } from "@/component/todo/todoList";
 import { Layout } from "@/layout/layout";
 
-const Team = () => {
+const Task = () => {
   return (
     <Layout title="タスクリスト">
       <div className="flex flex-wrap flex-row justify-center">
@@ -18,4 +18,4 @@ const Team = () => {
   );
 };
 
-export default Team;
+export default Task;

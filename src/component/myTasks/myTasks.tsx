@@ -23,7 +23,7 @@ export const MyTasks = () => {
 
   return (
     <div className="bg-gray-100 flex flex-col w-2/4">
-      <h2 className="ml-5">あなたが作成したチーム</h2>
+      <h2 className="ml-5">あなたが作成したリスト</h2>
       {isLoading ? <Loading /> : null}
       {data?.map((task) => {
         return (

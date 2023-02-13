@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Auth } from "../auth/auth";
 import { AddTaskModalContent } from "../modalContent/addTaskModalConetn";
-import { CreateTeamModalContent } from "../modalContent/createTeamModalContent";
+import { CreateListModalContent } from "../modalContent/createListModalContent";
 
 export const Header = () => {
   const [opened, setOpened] = useState<boolean>(false);
@@ -17,8 +17,9 @@ export const Header = () => {
 
   return (
     <header className="w-full h-20 text-black flex items-center justify-between bg-gray-200">
-      <Link href="/">
-        <h1 className="font-bold ml-3 text-lg xs:text-3xl">Todoリスト</h1>
+      <Link href="/" className="ml-3">
+        <h1 className="font-bold text-lg xs:text-3xl">Todoリスト</h1>
+        <p className="text-sm m-0">ホームへ戻る</p>
       </Link>
       <Modal
         opened={opened}
@@ -27,7 +28,7 @@ export const Header = () => {
         centered
       >
         {router.pathname === "/" ? (
-          <CreateTeamModalContent />
+          <CreateListModalContent />
         ) : data?.adminUserEmail === user?.email ? (
           <AddTaskModalContent />
         ) : null}

@@ -1,7 +1,7 @@
 import { SegmentedControl } from "@mantine/core";
 import { useState } from "react";
 import { AddUser } from "./navContent/addUser";
-import { DeleteTeam } from "./navContent/deleteTeam";
+import { DeleteList } from "./navContent/deleteList";
 import { Entrust } from "./navContent/entrust";
 
 export const AdminContent = ({
@@ -24,7 +24,7 @@ export const AdminContent = ({
       />
       {selected === "add" && <AddUser name={name} />}
       {selected === "entrust" && <Entrust />}
-      {selected === "delete" && <DeleteTeam />}
+      {selected === "delete" && <DeleteList />}
     </div>
   );
 };
